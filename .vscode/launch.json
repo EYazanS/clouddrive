@@ -10,7 +10,7 @@
 			"request": "launch",
 			"preLaunchTask": "build",
 			// If you have changed target frameworks, make sure to update the program path.
-			"program": "${workspaceFolder}/src/bin/Debug/net7.0/clouddrive.dll",
+			"program": "${workspaceFolder}/src/api/bin/Debug/net7.0/clouddrive.dll",
 			"args": [],
 			"cwd": "${workspaceFolder}/src",
 			"stopAtEntry": false,
@@ -21,9 +21,6 @@
 			},
 			"env": {
 				"ASPNETCORE_ENVIRONMENT": "Development"
-			},
-			"sourceFileMap": {
-				"/Views": "${workspaceFolder}/Views"
 			}
 		},
 		{
