@@ -1,4 +1,6 @@
 
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using CloudDrive.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,5 +13,6 @@ namespace CloudDrive.Persistence
 		}
 
 		public DbSet<Data> Data { get; set; }
+		public DbSet<UserPasswords> UserPasswords { get; set; }
 	}
 }
