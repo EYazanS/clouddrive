@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace clouddrive.Controllers
+namespace CloudDrive.Controllers
 {
 	[Route("/api/Files")]
 	public class FilesController : ControllerBase
