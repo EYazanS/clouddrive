@@ -11,5 +11,6 @@ namespace CloudDrive.Persistence
 		}
 
 		public DbSet<Data> Data { get; set; }
+		public DbSet<Notes> Notes {get; set;}
 	}
 }
