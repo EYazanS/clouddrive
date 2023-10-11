@@ -1,4 +1,5 @@
 
+using clouddrive.Domain.Entities;
 using CloudDrive.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,5 +12,6 @@ namespace CloudDrive.Persistence
 		}
 
 		public DbSet<Data> Data { get; set; }
+		public DbSet<Notebook> Notebooks { get; set; }
 	}
 }
