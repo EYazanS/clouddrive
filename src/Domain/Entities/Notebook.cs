@@ -1,4 +1,4 @@
-namespace clouddrive.Domain.Entities
+namespace CloudDrive.Domain.Entities
 {
 	public class Notebook
 	{
