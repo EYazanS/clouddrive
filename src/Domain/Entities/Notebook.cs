@@ -7,6 +7,5 @@ namespace clouddrive.Domain.Entities
 		public DateTime CreateDate { get; set; }
 		public string Category { get; set; }
 		public string Color { get; set; }
-
 	}
 }
