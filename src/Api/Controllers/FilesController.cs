@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace clouddrive.Controllers
+namespace CloudDrive.Controllers
 {
 	[Route("/api/Files")]
 	[Authorize]
