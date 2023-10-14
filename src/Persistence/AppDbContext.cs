@@ -1,11 +1,5 @@
-
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
 using CloudDrive.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace CloudDrive.Persistence
