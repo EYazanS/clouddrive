@@ -1,13 +1,18 @@
-using Microsoft.AspNetCore.Authorization;
+using CloudDrive.Services.Files;
 using Microsoft.AspNetCore.Mvc;
-using OpenIddict.Validation.AspNetCore;
 
 namespace CloudDrive.Controllers
 {
 	[Route("/api/Files")]
-	[Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]
 	public class FilesController : ControllerBase
 	{
+		private readonly IFilesService _filesService;
+
+		public FilesController(IFilesService filesService)
+		{
+			_filesService = filesService;
+		}
+
 		[HttpGet]
 		public string Get()
 		{
@@ -15,10 +20,18 @@ namespace CloudDrive.Controllers
 		}
 
 
-		[HttpGet("Anon"), AllowAnonymous]
+		[HttpGet("Anon")]
 		public string Get0()
 		{
 			return "Hello world!";
+		}
+
+		[HttpPost]
+		public string Post([FromForm] IFormFile file)
+		{
+			_filesService.Insert(file);
+
+			return "Inserted";
 		}
 	}
 }
