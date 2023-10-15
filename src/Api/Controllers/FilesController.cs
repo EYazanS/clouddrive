@@ -13,5 +13,12 @@ namespace CloudDrive.Controllers
 		{
 			return "Hello world!";
 		}
+
+
+		[HttpGet("Anon"), AllowAnonymous]
+		public string Get0()
+		{
+			return "Hello world!";
+		}
 	}
 }
