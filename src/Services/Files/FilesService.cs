@@ -18,6 +18,7 @@ namespace CloudDrive.Services.Files
 			_fileConfigurations = fileConfigurations;
 		}
 
+		// TODO: save file name, new file name and path to database
 		public async void Insert(IFormFile file)
 		{
 			// Path
