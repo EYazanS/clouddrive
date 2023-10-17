@@ -1,24 +1,64 @@
-using Microsoft.AspNetCore.Authorization;
+using CloudDrive.Services.Files;
 using Microsoft.AspNetCore.Mvc;
-using OpenIddict.Validation.AspNetCore;
 
 namespace CloudDrive.Controllers
 {
 	[Route("/api/Files")]
-	[Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]
 	public class FilesController : ControllerBase
 	{
-		[HttpGet]
-		public string Get()
+		private readonly IFilesService _filesService;
+
+		public FilesController(IFilesService filesService)
 		{
-			return "Hello world!";
+			_filesService = filesService;
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Get()
+		{
+			return Ok(await _filesService.Get());
+		}
+
+		[HttpGet("{id}")]
+		public async Task<IActionResult> Get(int id)
+		{
+			var result = await _filesService.Get(id);
+
+			if (result.IsSuccssfull)
+			{
+				return Ok(result.Data);
+			}
+
+			return NotFound(result);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Post([FromForm] IFormFile file)
+		{
+			var result = await _filesService.Insert(file);
+
+			if (result.IsSuccssfull)
+			{
+				return Ok(result);
+			}
+
+			return BadRequest(result);
 		}
 
 
-		[HttpGet("Anon"), AllowAnonymous]
-		public string Get0()
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> Delete([FromRoute] int id)
 		{
-			return "Hello world!";
+			var result = await _filesService.Delete(id);
+
+			if (result.IsSuccssfull)
+			{
+				return NoContent();
+			}
+			else
+			{
+				return BadRequest(result);
+			}
 		}
 	}
 }

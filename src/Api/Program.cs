@@ -1,6 +1,7 @@
 using CloudDrive.Api.Workers;
 using CloudDrive.Domain.Entities;
 using CloudDrive.Persistence;
+using CloudDrive.Services.Files;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.Validation.AspNetCore;
@@ -14,6 +15,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 	options.UseOpenIddict();
+});
+
+builder
+	.Services
+	.AddScoped<IFilesService, FilesService>();
+
+builder.Services.AddSingleton(new FileConfigurations()
+{
+	FileSavePath = builder.Configuration["FileSavePath"]
 });
 
 builder
