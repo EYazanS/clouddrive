@@ -14,24 +14,51 @@ namespace CloudDrive.Controllers
 		}
 
 		[HttpGet]
-		public string Get()
+		public async Task<IActionResult> Get()
 		{
-			return "Hello world!";
+			return Ok(await _filesService.Get());
 		}
 
-
-		[HttpGet("Anon")]
-		public string Get0()
+		[HttpGet("{id}")]
+		public async Task<IActionResult> Get(int id)
 		{
-			return "Hello world!";
+			var result = await _filesService.Get(id);
+
+			if (result.IsSuccssfull)
+			{
+				return Ok(result.Data);
+			}
+
+			return NotFound(result);
 		}
 
 		[HttpPost]
-		public string Post([FromForm] IFormFile file)
+		public async Task<IActionResult> Post([FromForm] IFormFile file)
 		{
-			_filesService.Insert(file);
+			var result = await _filesService.Insert(file);
 
-			return "Inserted";
+			if (result.IsSuccssfull)
+			{
+				return Ok(result);
+			}
+
+			return BadRequest(result);
+		}
+
+
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> Delete([FromRoute] int id)
+		{
+			var result = await _filesService.Delete(id);
+
+			if (result.IsSuccssfull)
+			{
+				return NoContent();
+			}
+			else
+			{
+				return BadRequest(result);
+			}
 		}
 	}
 }
