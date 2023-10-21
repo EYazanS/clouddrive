@@ -158,6 +158,15 @@ namespace CloudDrive.Services.Files
 			{
 				var entity = _db.Data.Find(id);
 
+				if (entity == null)
+				{
+					return new Result
+					{
+						Message = "Item not found",
+						IsSuccssfull = false,
+					};
+				}
+
 				_db.Data.Remove(entity);
 
 				await _db.SaveChangesAsync();
@@ -185,12 +194,6 @@ namespace CloudDrive.Services.Files
 						IsSuccssfull = false,
 					};
 				}
-
-				_logger.LogInformation(
-					"Saved '{originalName}' to storage with new name: '{newFileName}'",
-					entity.OriginalFileName,
-					entity.NewFileName
-				);
 
 				transaction.Commit();
 

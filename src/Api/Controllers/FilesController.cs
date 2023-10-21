@@ -45,7 +45,6 @@ namespace CloudDrive.Controllers
 			return BadRequest(result);
 		}
 
-
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)
 		{
