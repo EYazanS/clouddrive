@@ -40,7 +40,7 @@ namespace CloudDrive.Controllers
 
 			if (result.IsSuccssfull)
 			{
-				return Ok(result);
+				return Ok(result.Data);
 			}
 
 			return BadRequest(result);
@@ -53,7 +53,7 @@ namespace CloudDrive.Controllers
 
 			if (result.IsSuccssfull)
 			{
-				return Ok(result);
+				return Ok(result.Data);
 			}
 			else
 			{
