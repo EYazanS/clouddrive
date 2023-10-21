@@ -1,4 +1,4 @@
-namespace CloudDrive.Services.Notebook
+namespace CloudDrive.Services.Notebooks
 {
 	public class NotebookDto
 	{
