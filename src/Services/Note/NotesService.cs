@@ -9,11 +9,11 @@ namespace CloudDrive.Services.Note
 {
 	public interface INotesService
 	{
-		Task<List<NotesDto>> Get();
-		Task<Result<NotesDto>> Get(int id);
-		Task<Result<NotesDto>> Insert(Notes notes);
+		Task<List<NoteDto>> Get();
+		Task<Result<NoteDto>> Get(int id);
+		Task<Result<NoteDto>> Insert(NoteDto notes);
 		Task<Result> Delete(int id);
-		Task<Result<NotesDto>> Update(Notes notes);
+		Task<Result<NoteDto>> Update(NoteDto notes);
 	}
 
 	public class NotesService : INotesService
@@ -30,15 +30,15 @@ namespace CloudDrive.Services.Note
 			_logger = logger;
 		}
 
-		public async Task<List<NotesDto>> Get()
+		public async Task<List<NoteDto>> Get()
 		{
 			var data = await _db.Notes.ToListAsync();
 
-			List<NotesDto> results = new List<NotesDto>();
+			List<NoteDto> results = new List<NoteDto>();
 
 			foreach (var item in data)
 			{
-				results.Add(new NotesDto
+				results.Add(new NoteDto
 				{
 					Id = item.Id,
 					Title = item.Title,
@@ -51,23 +51,23 @@ namespace CloudDrive.Services.Note
 			return results;
 		}
 
-		public async Task<Result<NotesDto>> Get(int id)
+		public async Task<Result<NoteDto>> Get(int id)
 		{
 			var data = await _db.Notes.FindAsync(id);
 
 			if (data == null)
 			{
-				return new Result<NotesDto>
+				return new Result<NoteDto>
 				{
 					Message = "Note not found",
 					IsSuccssfull = false,
 				};
 			}
 
-			return new Result<NotesDto>
+			return new Result<NoteDto>
 			{
 				IsSuccssfull = true,
-				Data = new NotesDto
+				Data = new NoteDto
 				{
 					Id = data.Id,
 					Title = data.Title,
@@ -78,10 +78,9 @@ namespace CloudDrive.Services.Note
 			};
 		}
 
-		public async Task<Result<NotesDto>> Insert(Notes note)
+		public async Task<Result<NoteDto>> Insert(NoteDto note)
 		{
 			var transaction = _db.Database.BeginTransaction();
-
 			try
 			{
 				var data = new Notes
@@ -94,7 +93,6 @@ namespace CloudDrive.Services.Note
 
 				_db.Notes.Add(data);
 
-				await _db.SaveChangesAsync();
 
 				_logger.LogInformation(
 					"Inserted '{title}' with tags '{tags}' created on '{createDate}' by user '{userId}' to database with id: {id}",
@@ -104,14 +102,15 @@ namespace CloudDrive.Services.Note
 					data.UserId,
 					data.Id
 				);
+				await _db.SaveChangesAsync();
 
 				transaction.Commit();
 
-				return new Result<NotesDto>
+				return new Result<NoteDto>
 				{
 					Message = "Inserted",
 					IsSuccssfull = true,
-					Data = new NotesDto
+					Data = new NoteDto
 					{
 						Id = data.Id,
 						Title = data.Title,
@@ -127,7 +126,7 @@ namespace CloudDrive.Services.Note
 
 				transaction.Rollback();
 
-				return new Result<NotesDto>
+				return new Result<NoteDto>
 				{
 					Message = "Error while trying to save note due to technical reason with code: " + ex.HResult,
 					IsSuccssfull = false,
@@ -154,12 +153,13 @@ namespace CloudDrive.Services.Note
 
 				_db.Notes.Remove(data);
 
-				await _db.SaveChangesAsync();
 
 				_logger.LogInformation(
 					"Deleted note with id: {id}",
 					data.Id
 				);
+				
+				await _db.SaveChangesAsync();
 
 				transaction.Commit();
 				return new Result
@@ -182,26 +182,28 @@ namespace CloudDrive.Services.Note
 			}
 		}
 
-        public async Task<Result<NotesDto>> Update(Notes notes)
-        {
+		public async Task<Result<NoteDto>> Update(NoteDto notes)
+		{
 			var transaction = _db.Database.BeginTransaction();
 			try
 			{
 				var data = await _db.Notes.FindAsync(notes.Id);
-				if(data==null)
+				if (data == null)
 				{
-					return new Result<NotesDto>
+					return new Result<NoteDto>
 					{
 						Message = "Note not found",
 						IsSuccssfull = false,
 					};
 				}
+
 				data.Title = notes.Title;
 				data.Tags = notes.Tags;
 				data.CreateDate = notes.CreateDate;
 				data.UserId = notes.UserId;
 				_db.Notes.Update(data);
 				await _db.SaveChangesAsync();
+
 				_logger.LogInformation(
 					"Updated '{title}' with tags '{tags}' created on '{createDate}' by user '{userId}' to database with id: {id}",
 					data.Title,
@@ -210,12 +212,14 @@ namespace CloudDrive.Services.Note
 					data.UserId,
 					data.Id
 				);
+
 				transaction.Commit();
-				return new Result<NotesDto>
+
+				return new Result<NoteDto>
 				{
 					Message = "Updated",
 					IsSuccssfull = true,
-					Data = new NotesDto
+					Data = new NoteDto
 					{
 						Id = data.Id,
 						Title = data.Title,
@@ -225,18 +229,19 @@ namespace CloudDrive.Services.Note
 					}
 				};
 
-			}catch(Exception ex)
+			}
+			catch (Exception ex)
 			{
 				_logger.LogError("Failed to update note because of exception: '{Message}'", ex.Message);
 
 				transaction.Rollback();
 
-				return new Result<NotesDto>
+				return new Result<NoteDto>
 				{
 					Message = "Error while trying to update note due to technical reason with code: " + ex.HResult,
 					IsSuccssfull = false,
 				};
 			}
-        }
-    }
+		}
+	}
 }

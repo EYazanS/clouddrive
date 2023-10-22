@@ -20,9 +20,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder
 	.Services
-	.AddScoped<IFilesService, FilesService>();
-builder
-	.Services
+	.AddScoped<IFilesService, FilesService>()
 	.AddScoped<INotesService, NotesService>();
 
 builder.Services.AddSingleton(new FileConfigurations()

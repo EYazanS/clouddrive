@@ -8,23 +8,23 @@ namespace CloudDrive.Controllers
 	[Route("/api/Notes")]
 	public class NotesController : ControllerBase
 	{
-		private readonly INotesService _ControllerService;
+		private readonly INotesService  _service;
 
 		public NotesController(INotesService ControllerService)
 		{
-			_ControllerService = ControllerService;
+			 _service = ControllerService;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> Get()
 		{
-			return Ok(await _ControllerService.Get());
+			return Ok(await  _service.Get());
 		}
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> Get(int id)
 		{
-			var result = await _ControllerService.Get(id);
+			var result = await  _service.Get(id);
 
 			if (result.IsSuccssfull)
 			{
@@ -35,13 +35,13 @@ namespace CloudDrive.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Post([FromForm] Notes note)
+		public async Task<IActionResult> Post([FromBody] NoteDto note)
 		{
-			var result = await _ControllerService.Insert(note);
+			var result = await  _service.Insert(note);
 
 			if (result.IsSuccssfull)
 			{
-				return Ok(result);
+				return Ok(result.Data);
 			}
 
 			return BadRequest(result);
@@ -51,7 +51,7 @@ namespace CloudDrive.Controllers
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)
 		{
-			var result = await _ControllerService.Delete(id);
+			var result = await  _service.Delete(id);
 
 			if (result.IsSuccssfull)
 			{
@@ -63,13 +63,13 @@ namespace CloudDrive.Controllers
 			}
 		}
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromRoute] int id, [FromForm] Notes note)
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] NoteDto note)
         {
-            var result = await _ControllerService.Update(note);
+            var result = await  _service.Update(note);
 
             if (result.IsSuccssfull)
             {
-                return Ok(result);
+                return Ok(result.Data);
             }
             else
             {
