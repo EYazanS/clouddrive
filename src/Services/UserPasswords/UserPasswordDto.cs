@@ -1,6 +1,6 @@
 namespace CloudDrive.Services.Users
 {
-	public class UserPasswordsDto
+	public class UserPasswordDto
 	{
 		public int Id { get; set; }
 		public string Title { get; set; }

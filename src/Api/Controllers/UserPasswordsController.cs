@@ -4,26 +4,25 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CloudDrive.Controllers
 {
-	[Route("api/Users")]
-
-	public class UsersController : ControllerBase
+	[Route("api/user-passwords")]
+	public class UserPasswordsController : ControllerBase
 	{
-		private readonly IUsersService _usersService;
-		public UsersController(IUsersService usersService)
+		private readonly IUsersService _service;
+		public UserPasswordsController(IUsersService usersService)
 		{
-			_usersService = usersService;
+			_service = usersService;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> Get()
 		{
-			return Ok(await _usersService.Get());
+			return Ok(await _service.Get());
 		}
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> Get(int id)
 		{
-			var result = await _usersService.Get(id);
+			var result = await _service.Get(id);
 
 			if (result.IsSuccssfull)
 			{
@@ -36,7 +35,7 @@ namespace CloudDrive.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Post([FromBody] UserPasswordFormDto user)
 		{
-			var result = await _usersService.Insert(user);
+			var result = await _service.Insert(user);
 
 			if (result.IsSuccssfull)
 			{
@@ -49,7 +48,7 @@ namespace CloudDrive.Controllers
 		[HttpPut("{id}")]
 		public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UserPasswordFormDto user)
 		{
-			var result = await _usersService.Update(id, user);
+			var result = await _service.Update(id, user);
 
 			if (result.IsSuccssfull)
 			{
@@ -64,11 +63,11 @@ namespace CloudDrive.Controllers
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)
 		{
-			var result = await _usersService.Delete(id);
+			var result = await _service.Delete(id);
 
 			if (result.IsSuccssfull)
 			{
-				return Ok(result);
+				return NoContent();
 			}
 			else
 			{

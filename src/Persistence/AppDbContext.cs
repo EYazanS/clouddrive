@@ -13,7 +13,7 @@ namespace CloudDrive.Persistence
 		public DbSet<Data> Data { get; set; }
 		public DbSet<Notebook> Notebooks { get; set; }
 		public DbSet<Notes> Notes { get; set; }
-		public DbSet<UserPasswords> UserPasswords { get; set; }
+		public DbSet<UserPassword> UserPassword { get; set; }
 		public DbSet<Audit> Audit { get; set; }
 	}
 }
