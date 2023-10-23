@@ -2,6 +2,7 @@ using CloudDrive.Api.Workers;
 using CloudDrive.Domain.Entities;
 using CloudDrive.Persistence;
 using CloudDrive.Services.Files;
+using CloudDrive.Services.Note;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.Validation.AspNetCore;
@@ -19,7 +20,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder
 	.Services
-	.AddScoped<IFilesService, FilesService>();
+	.AddScoped<IFilesService, FilesService>()
+	.AddScoped<INotesService, NotesService>();
 
 builder.Services.AddSingleton(new FileConfigurations()
 {
