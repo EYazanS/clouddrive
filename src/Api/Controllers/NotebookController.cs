@@ -1,4 +1,3 @@
-using CloudDrive.Services.Files;
 using CloudDrive.Services.Notebooks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +33,49 @@ namespace CloudDrive.Controllers
 			return BadRequest(result);
 		}
 
+
+		[HttpGet("{id}")]
+		public async Task<IActionResult> Get(int id)
+		{
+			var result = await _service.Get(id);
+
+			if (result.IsSuccssfull)
+			{
+				return Ok(result.Data);
+			}
+
+			return NotFound(result);
+		}
+
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> Delete([FromRoute] int id)
+		{
+			var result = await _service.Delete(id);
+
+			if (result.IsSuccssfull)
+			{
+				return NoContent();
+			}
+			else
+			{
+				return BadRequest(result);
+			}
+		}
+
+		[HttpPut("{id}")]
+		public async Task<IActionResult> Update([FromRoute] int id, [FromBody] NotebookDto user)
+		{
+			var result = await _service.Update(id, user);
+
+			if (result.IsSuccssfull)
+			{
+				return Ok(result.Data);
+			}
+			else
+			{
+				return BadRequest(result);
+			}
+		}
 	}
 
 }
