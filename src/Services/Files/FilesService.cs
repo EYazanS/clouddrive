@@ -11,6 +11,7 @@ namespace CloudDrive.Services.Files
 	{
 		Task<List<DataDto>> Get();
 		Task<Result<DataDto>> Get(int id);
+		Task<Result<FileDto>> Download(int id);
 		Task<Result<DataDto>> Insert(IFormFile file);
 		Task<Result> Delete(int id);
 	}
@@ -70,6 +71,33 @@ namespace CloudDrive.Services.Files
 				Data = new DataDto
 				{
 					Id = data.Id,
+					FileName = data.OriginalFileName,
+					ContentType = data.ContentType
+				}
+			};
+		}
+
+		public async Task<Result<FileDto>> Download(int id)
+		{
+			var data = await _db.Data.FindAsync(id);
+
+			if (data == null || !File.Exists(data.Path))
+			{
+				return new Result<FileDto>
+				{
+					Message = "Item not found",
+					IsSuccssfull = false,
+				};
+			}
+
+			Stream readFileStream = File.OpenRead(data.Path);
+
+			return new Result<FileDto>
+			{
+				IsSuccssfull = true,
+				Data = new FileDto
+				{
+					Stream = readFileStream,
 					FileName = data.OriginalFileName,
 					ContentType = data.ContentType
 				}

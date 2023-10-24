@@ -33,6 +33,19 @@ namespace CloudDrive.Controllers
 			return NotFound(result);
 		}
 
+		[HttpGet("Download/{id}")]
+		public async Task<IActionResult> Download(int id)
+		{
+			var result = await _filesService.Download(id);
+
+			if (result.IsSuccssfull)
+			{
+				return File(result.Data.Stream, result.Data.ContentType, result.Data.FileName);
+			}
+
+			return NotFound(result);
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> Post([FromForm] IFormFile file)
 		{
