@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using CloudDrive.Domain;
 using CloudDrive.Domain.Entities;
 using CloudDrive.Persistence;
@@ -241,5 +242,7 @@ namespace CloudDrive.Services.Files
 				};
 			}
 		}
+
 	}
+
 }
