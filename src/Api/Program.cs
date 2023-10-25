@@ -2,6 +2,7 @@ using CloudDrive.Api.Middleware;
 using CloudDrive.Api.Workers;
 using CloudDrive.Domain.Entities;
 using CloudDrive.Persistence;
+using CloudDrive.Services;
 using CloudDrive.Services.Files;
 using CloudDrive.Services.Note;
 using Microsoft.AspNetCore.Identity;
@@ -28,6 +29,8 @@ builder.Services.AddSingleton(new FileConfigurations()
 {
 	FileSavePath = builder.Configuration["FileSavePath"]
 });
+
+builder.Services.AddSingleton<BackgroundWorkService>();
 
 builder
 	.Services
@@ -128,6 +131,10 @@ builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 
 builder.Services.AddHostedService<InitWorker>();
+
+builder.Services.AddHostedService<TimerWorker>();
+
+builder.Services.AddHostedService<WorkQueueWorker>();
 
 var app = builder.Build();
 
