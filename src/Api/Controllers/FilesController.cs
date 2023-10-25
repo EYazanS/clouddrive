@@ -47,9 +47,16 @@ namespace CloudDrive.Controllers
 		}
 
 		[HttpGet("DownloadAll")]
-		public async Task DownloadAll()
+		public async Task<IActionResult> DownloadAll()
 		{
-			await _filesService.DownloadAll();
+			var result = await _filesService.DownloadAll();
+
+			if (result.IsSuccssfull)
+			{
+				return File(result.Data.Stream, result.Data.ContentType, result.Data.FileName);
+			}
+
+			return NotFound(result);
 		}
 
 		[HttpPost]

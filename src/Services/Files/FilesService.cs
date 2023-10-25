@@ -15,7 +15,7 @@ namespace CloudDrive.Services.Files
 		Task<List<DataDto>> Get();
 		Task<Result<DataDto>> Get(int id);
 		Task<Result<FileDto>> Download(int id);
-		Task DownloadAll();
+		Task<Result<FileDto>> DownloadAll();
 		Task<Result<DataDto>> Insert(IFormFile file);
 		Task<Result> Delete(int id);
 	}
@@ -111,51 +111,73 @@ namespace CloudDrive.Services.Files
 			};
 		}
 
-		public async Task DownloadAll()
+		public async Task<Result<FileDto>> DownloadAll()
 		{
 			var data = await _db.Data.ToListAsync();
 
 			if (data == null || data.Count == 0)
 			{
-				return;
+				return new Result<FileDto>
+				{
+					Message = "Item not found",
+					IsSuccssfull = false,
+				};
 			}
 
 			Dictionary<string, int> usedNames = new Dictionary<string, int>(data.Count);
 
-			Stream stream = new MemoryStream();
+			string fileName = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".zip";
 
-			ZipArchive zipArchive = new ZipArchive(stream, ZipArchiveMode.Create);
+			string path = Path.Combine(_fileConfigurations.FileSavePath, fileName);
 
-			foreach (var item in data)
+			// TODO: Make file strem into a memory stream!!
+			using (Stream stream = File.Create(path))
 			{
-				if (!File.Exists(item.Path))
+				using ZipArchive zipArchive = new ZipArchive(stream, ZipArchiveMode.Create);
+
+				foreach (var item in data)
 				{
-					continue;
+					if (!File.Exists(item.Path))
+					{
+						continue;
+					}
+
+
+					string name = item.OriginalFileName;
+
+					if (usedNames.ContainsKey(name))
+					{
+						int count = usedNames[name];
+
+						usedNames[name]++;
+
+						name = count + name;
+					}
+					else
+					{
+						usedNames[name] = 1;
+					}
+
+					var entry = zipArchive.CreateEntry(name, CompressionLevel.Optimal);
+
+					using var entryStream = entry.Open();
+
+					using Stream readFileStream = File.OpenRead(item.Path);
+
+					await readFileStream.CopyToAsync(entryStream);
 				}
-
-				using Stream readFileStream = File.OpenRead(item.Path);
-
-				string name = item.OriginalFileName;
-
-				if (usedNames.ContainsKey(name))
-				{
-					int count = usedNames[name];
-
-					usedNames[name]++;
-
-					name = count + name;
-				}
-				else
-				{
-					usedNames[name] = 1;
-				}
-
-				var entry = zipArchive.CreateEntry(name, CompressionLevel.NoCompression);
-
-				using var entryStream = entry.Open();
-
-				await readFileStream.CopyToAsync(entryStream);
 			}
+
+			return new Result<FileDto>
+			{
+				IsSuccssfull = true,
+				Data = new FileDto()
+				{
+					FileName = fileName,
+					ContentType = "application/zip",
+					Stream = File.OpenRead(path)
+				}
+			};
 		}
 
 		public async Task<Result<DataDto>> Insert(IFormFile file)
