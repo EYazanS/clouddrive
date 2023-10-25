@@ -21,7 +21,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder
 	.Services
 	.AddScoped<IFilesService, FilesService>()
-	.AddScoped<IUsersService, UserPasswordsService>();
+	.AddScoped<IUserPasswordsService, UserPasswordsService>();
 
 builder.Services.AddSingleton(new FileConfigurations()
 {

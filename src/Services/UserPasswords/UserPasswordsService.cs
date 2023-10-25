@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CloudDrive.Services.Users
 {
-	public interface IUsersService
+	public interface IUserPasswordsService
 	{
 		Task<List<UserPasswordDto>> Get();
 		Task<Result<UserPasswordDto>> Get(int id);
@@ -14,7 +14,7 @@ namespace CloudDrive.Services.Users
 		Task<Result<UserPasswordDto>> Update(int id, UserPasswordFormDto user);
 		Task<Result> Delete(int id);
 	}
-	public class UserPasswordsService : IUsersService
+	public class UserPasswordsService : IUserPasswordsService
 	{
 		private readonly AppDbContext _db;
 		private readonly ILogger<UserPasswordsService> _logger;
@@ -29,7 +29,7 @@ namespace CloudDrive.Services.Users
 
 		public async Task<List<UserPasswordDto>> Get()
 		{
-			var entityList = await _db.UserPassword.ToListAsync();
+			var entityList = await _db.UserPasswords.ToListAsync();
 
 			List<UserPasswordDto> usersDtoList = new List<UserPasswordDto>();
 
@@ -49,7 +49,7 @@ namespace CloudDrive.Services.Users
 
 		public async Task<Result<UserPasswordDto>> Get(int id)
 		{
-			var entity = await _db.UserPassword.FindAsync(id);
+			var entity = await _db.UserPasswords.FindAsync(id);
 
 			if (entity == null)
 			{
@@ -88,7 +88,7 @@ namespace CloudDrive.Services.Users
 				entity.Category = user.Category;
 				entity.CreateDate = DateTime.Now;
 
-				_db.UserPassword.Add(entity);
+				_db.UserPasswords.Add(entity);
 
 				await _db.SaveChangesAsync();
 
@@ -133,7 +133,7 @@ namespace CloudDrive.Services.Users
 
 			try
 			{
-				var entity = await _db.UserPassword.FindAsync(id);
+				var entity = await _db.UserPasswords.FindAsync(id);
 
 				if (entity == null)
 				{
@@ -163,7 +163,7 @@ namespace CloudDrive.Services.Users
 				entity.Site = user.Site;
 				entity.Category = user.Category;
 
-				_db.UserPassword.Update(entity);
+				_db.UserPasswords.Update(entity);
 
 				await _db.SaveChangesAsync();
 
@@ -201,7 +201,7 @@ namespace CloudDrive.Services.Users
 
 			try
 			{
-				var entity = await _db.UserPassword.FindAsync(id);
+				var entity = await _db.UserPasswords.FindAsync(id);
 
 				if (entity == null)
 				{
@@ -212,7 +212,7 @@ namespace CloudDrive.Services.Users
 					};
 				}
 
-				_db.UserPassword.Remove(entity);
+				_db.UserPasswords.Remove(entity);
 
 				await _db.SaveChangesAsync();
 

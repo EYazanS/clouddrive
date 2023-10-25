@@ -7,8 +7,8 @@ namespace CloudDrive.Controllers
 	[Route("api/user-passwords")]
 	public class UserPasswordsController : ControllerBase
 	{
-		private readonly IUsersService _service;
-		public UserPasswordsController(IUsersService usersService)
+		private readonly IUserPasswordsService _service;
+		public UserPasswordsController(IUserPasswordsService usersService)
 		{
 			_service = usersService;
 		}

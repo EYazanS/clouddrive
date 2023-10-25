@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231022150158_EditedUserPasswordsEntityName")]
-    partial class EditedUserPasswordsEntityName
+    [Migration("20231025152055_AddedUserPasswordsTable")]
+    partial class AddedUserPasswordsTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -221,7 +221,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserPassword");
+                    b.ToTable("UserPasswords");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
