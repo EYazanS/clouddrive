@@ -1,4 +1,6 @@
+using System.IO;
 using System.IO.Compression;
+using System.Net;
 using CloudDrive.Domain;
 using CloudDrive.Domain.Entities;
 using CloudDrive.Persistence;
@@ -13,6 +15,7 @@ namespace CloudDrive.Services.Files
 		Task<List<DataDto>> Get();
 		Task<Result<DataDto>> Get(int id);
 		Task<Result<FileDto>> Download(int id);
+		Task DownloadAll();
 		Task<Result<DataDto>> Insert(IFormFile file);
 		Task<Result> Delete(int id);
 	}
@@ -22,15 +25,18 @@ namespace CloudDrive.Services.Files
 		private readonly AppDbContext _db;
 		private readonly ILogger<FilesService> _logger;
 		private readonly FileConfigurations _fileConfigurations;
+		private readonly IHttpContextAccessor _httpContextAccessor;
 
 		public FilesService(
 			AppDbContext db,
 			ILogger<FilesService> logger,
+			IHttpContextAccessor httpContextAccessor,
 			FileConfigurations fileConfigurations
 		)
 		{
 			_db = db;
 			_logger = logger;
+			_httpContextAccessor = httpContextAccessor;
 			_fileConfigurations = fileConfigurations;
 		}
 
@@ -103,6 +109,53 @@ namespace CloudDrive.Services.Files
 					ContentType = data.ContentType
 				}
 			};
+		}
+
+		public async Task DownloadAll()
+		{
+			var data = await _db.Data.ToListAsync();
+
+			if (data == null || data.Count == 0)
+			{
+				return;
+			}
+
+			Dictionary<string, int> usedNames = new Dictionary<string, int>(data.Count);
+
+			Stream stream = new MemoryStream();
+
+			ZipArchive zipArchive = new ZipArchive(stream, ZipArchiveMode.Create);
+
+			foreach (var item in data)
+			{
+				if (!File.Exists(item.Path))
+				{
+					continue;
+				}
+
+				using Stream readFileStream = File.OpenRead(item.Path);
+
+				string name = item.OriginalFileName;
+
+				if (usedNames.ContainsKey(name))
+				{
+					int count = usedNames[name];
+
+					usedNames[name]++;
+
+					name = count + name;
+				}
+				else
+				{
+					usedNames[name] = 1;
+				}
+
+				var entry = zipArchive.CreateEntry(name, CompressionLevel.NoCompression);
+
+				using var entryStream = entry.Open();
+
+				await readFileStream.CopyToAsync(entryStream);
+			}
 		}
 
 		public async Task<Result<DataDto>> Insert(IFormFile file)
