@@ -8,11 +8,11 @@ namespace CloudDrive.Services.Users
 {
 	public interface IUserPasswordsService
 	{
-		Task<List<UserPasswordDto>> Get();
-		Task<Result<UserPasswordDto>> Get(int id);
-		Task<Result<UserPasswordDto>> Insert(UserPasswordFormDto user);
-		Task<Result<UserPasswordDto>> Update(int id, UserPasswordFormDto user);
-		Task<Result> Delete(int id);
+		Task<List<UserPasswordDto>> GetAsync();
+		Task<Result<UserPasswordDto>> GetAsync(int id);
+		Task<Result<UserPasswordDto>> InsertAsync(UserPasswordFormDto user);
+		Task<Result<UserPasswordDto>> UpdateAsync(int id, UserPasswordFormDto user);
+		Task<Result> DeleteAsync(int id);
 	}
 	public class UserPasswordsService : IUserPasswordsService
 	{
@@ -27,7 +27,7 @@ namespace CloudDrive.Services.Users
 			_logger = logger;
 		}
 
-		public async Task<List<UserPasswordDto>> Get()
+		public async Task<List<UserPasswordDto>> GetAsync()
 		{
 			var entityList = await _db.UserPasswords.ToListAsync();
 
@@ -47,7 +47,7 @@ namespace CloudDrive.Services.Users
 			return usersDtoList;
 		}
 
-		public async Task<Result<UserPasswordDto>> Get(int id)
+		public async Task<Result<UserPasswordDto>> GetAsync(int id)
 		{
 			var entity = await _db.UserPasswords.FindAsync(id);
 
@@ -73,7 +73,7 @@ namespace CloudDrive.Services.Users
 			};
 		}
 
-		public async Task<Result<UserPasswordDto>> Insert(UserPasswordFormDto user)
+		public async Task<Result<UserPasswordDto>> InsertAsync(UserPasswordFormDto user)
 		{
 			var transaction = _db.Database.BeginTransaction();
 
@@ -127,7 +127,7 @@ namespace CloudDrive.Services.Users
 			}
 		}
 
-		public async Task<Result<UserPasswordDto>> Update(int id, UserPasswordFormDto user)
+		public async Task<Result<UserPasswordDto>> UpdateAsync(int id, UserPasswordFormDto user)
 		{
 			var transaction = _db.Database.BeginTransaction();
 
@@ -141,13 +141,6 @@ namespace CloudDrive.Services.Users
 					{
 						IsSuccssfull = false,
 						Message = "User password not found",
-						Data = new UserPasswordDto
-						{
-							Id = entity.Id,
-							Username = entity.Username,
-							Title = entity.Title,
-							CreateDate = entity.CreateDate
-						}
 					};
 				}
 
@@ -195,7 +188,7 @@ namespace CloudDrive.Services.Users
 				};
 			}
 		}
-		public async Task<Result> Delete(int id)
+		public async Task<Result> DeleteAsync(int id)
 		{
 			var transaction = _db.Database.BeginTransaction();
 
