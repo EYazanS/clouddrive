@@ -4,6 +4,7 @@ using CloudDrive.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231024173533_CreateUserCreditCard")]
+    partial class CreateUserCreditCard
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,11 +204,11 @@ namespace Persistence.Migrations
                     b.Property<string>("CreditCardSecretCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ExpireMonth")
-                        .HasColumnType("int");
+                    b.Property<string>("ExpireMonth")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ExpireYear")
-                        .HasColumnType("int");
+                    b.Property<string>("ExpireYear")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HolderName")
                         .HasColumnType("nvarchar(max)");
