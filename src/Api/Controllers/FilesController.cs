@@ -1,5 +1,6 @@
 using CloudDrive.Services.Files;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.IIS.Core;
 
 namespace CloudDrive.Controllers
 {
@@ -27,6 +28,32 @@ namespace CloudDrive.Controllers
 			if (result.IsSuccssfull)
 			{
 				return Ok(result.Data);
+			}
+
+			return NotFound(result);
+		}
+
+		[HttpGet("Download/{id}")]
+		public async Task<IActionResult> Download(int id)
+		{
+			var result = await _filesService.Download(id);
+
+			if (result.IsSuccssfull)
+			{
+				return File(result.Data.Stream, result.Data.ContentType, result.Data.FileName);
+			}
+
+			return NotFound(result);
+		}
+
+		[HttpGet("DownloadAll")]
+		public async Task<IActionResult> DownloadAll()
+		{
+			var result = await _filesService.DownloadAll();
+
+			if (result.IsSuccssfull)
+			{
+				return File(result.Data.Stream, result.Data.ContentType, result.Data.FileName);
 			}
 
 			return NotFound(result);
