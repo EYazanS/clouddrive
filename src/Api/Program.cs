@@ -4,6 +4,7 @@ using CloudDrive.Domain.Entities;
 using CloudDrive.Persistence;
 using CloudDrive.Services;
 using CloudDrive.Services.Files;
+using CloudDrive.Services.Notebooks;
 using CloudDrive.Services.Note;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,11 @@ builder
 	.Services
 	.AddScoped<IFilesService, FilesService>()
 	.AddScoped<INotesService, NotesService>();
+
+builder
+	.Services
+	.AddScoped<INotebooksService, NotebooksService>();
+
 
 builder.Services.AddSingleton(new FileConfigurations()
 {
