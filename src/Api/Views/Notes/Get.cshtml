@@ -1,0 +1,46 @@
+@using CloudDrive.Services.Note
+@model List<NoteDto>
+@{
+        NoteDto newNote = new NoteDto();
+}
+<html>
+
+<head>
+	<title>
+		Note page - Cloud drive
+	</title>
+</head>
+
+<body>
+	<h1 style="color: gray">
+		Note page
+	</h1>
+
+
+        @using (Html.BeginForm("CreateNote", "Note", FormMethod.Post))
+    {
+        <fieldset>
+            <legend>Add a Note</legend>
+            <div>
+                <label for="Title">Title</label>
+                <input type="text" name="Title" id="Title" value="@newNote.Title" required />
+            </div>
+            <div>
+                <label for="Tags">Tags</label>
+                <input type="text" name="Tags" id="Tags" value="@newNote.Tags" />
+            </div>
+            <input type="submit" value="Create Note" />
+        </fieldset>
+    }
+
+	<ol>
+		@foreach (var item in Model)
+		{
+			<li>
+				@item.Title
+			</li>
+		}
+	</ol>
+</body>
+
+</html>
