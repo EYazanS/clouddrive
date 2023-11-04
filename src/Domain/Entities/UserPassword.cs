@@ -1,8 +1,8 @@
 namespace CloudDrive.Domain.Entities
 {
-    public class UserPasswords
+    public class UserPassword
     {
-        public UserPasswords()
+        public UserPassword()
         {
             this.UserId = null;
         }

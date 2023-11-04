@@ -1,3 +1,6 @@
+using System.IO;
+using System.IO.Compression;
+using System.Net;
 using CloudDrive.Domain;
 using CloudDrive.Domain.Entities;
 using CloudDrive.Persistence;
@@ -7,31 +10,35 @@ using Microsoft.Extensions.Logging;
 
 namespace CloudDrive.Services.Files
 {
-    public interface IFilesService
-    {
-        Task<List<DataDto>> Get();
-        Task<Result<DataDto>> Get(int id);
-        Task<Result<FileDto>> Download(int id);
-        Task<Result<DataDto>> Insert(IFormFile file);
-        Task<Result> Delete(int id);
-    }
+	public interface IFilesService
+	{
+		Task<List<DataDto>> Get();
+		Task<Result<DataDto>> Get(int id);
+		Task<Result<FileDto>> Download(int id);
+		Task<Result<FileDto>> DownloadAll();
+		Task<Result<DataDto>> Insert(IFormFile file);
+		Task<Result> Delete(int id);
+	}
 
-    public class FilesService : IFilesService
-    {
-        private readonly AppDbContext _db;
-        private readonly ILogger<FilesService> _logger;
-        private readonly FileConfigurations _fileConfigurations;
+	public class FilesService : IFilesService
+	{
+		private readonly AppDbContext _db;
+		private readonly ILogger<FilesService> _logger;
+		private readonly FileConfigurations _fileConfigurations;
+		private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public FilesService(
-            AppDbContext db,
-            ILogger<FilesService> logger,
-            FileConfigurations fileConfigurations
-        )
-        {
-            _db = db;
-            _logger = logger;
-            _fileConfigurations = fileConfigurations;
-        }
+		public FilesService(
+			AppDbContext db,
+			ILogger<FilesService> logger,
+			IHttpContextAccessor httpContextAccessor,
+			FileConfigurations fileConfigurations
+		)
+		{
+			_db = db;
+			_logger = logger;
+			_httpContextAccessor = httpContextAccessor;
+			_fileConfigurations = fileConfigurations;
+		}
 
         public async Task<List<DataDto>> Get()
         {
@@ -92,21 +99,90 @@ namespace CloudDrive.Services.Files
 
             Stream readFileStream = File.OpenRead(data.Path);
 
-            return new Result<FileDto>
-            {
-                IsSuccssfull = true,
-                Data = new FileDto
-                {
-                    Stream = readFileStream,
-                    FileName = data.OriginalFileName,
-                    ContentType = data.ContentType
-                }
-            };
-        }
+			return new Result<FileDto>
+			{
+				IsSuccssfull = true,
+				Data = new FileDto
+				{
+					Stream = readFileStream,
+					FileName = data.OriginalFileName,
+					ContentType = data.ContentType
+				}
+			};
+		}
 
-        public async Task<Result<DataDto>> Insert(IFormFile file)
-        {
-            var transaction = _db.Database.BeginTransaction();
+		public async Task<Result<FileDto>> DownloadAll()
+		{
+			var data = await _db.Data.ToListAsync();
+
+			if (data == null || data.Count == 0)
+			{
+				return new Result<FileDto>
+				{
+					Message = "Item not found",
+					IsSuccssfull = false,
+				};
+			}
+
+			Dictionary<string, int> usedNames = new Dictionary<string, int>(data.Count);
+
+			string fileName = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".zip";
+
+			string path = Path.Combine(_fileConfigurations.FileSavePath, fileName);
+
+			// TODO: Make file strem into a memory stream!!
+			using (Stream stream = File.Create(path))
+			{
+				using ZipArchive zipArchive = new ZipArchive(stream, ZipArchiveMode.Create);
+
+				foreach (var item in data)
+				{
+					if (!File.Exists(item.Path))
+					{
+						continue;
+					}
+
+
+					string name = item.OriginalFileName;
+
+					if (usedNames.ContainsKey(name))
+					{
+						int count = usedNames[name];
+
+						usedNames[name]++;
+
+						name = count + name;
+					}
+					else
+					{
+						usedNames[name] = 1;
+					}
+
+					var entry = zipArchive.CreateEntry(name, CompressionLevel.Optimal);
+
+					using var entryStream = entry.Open();
+
+					using Stream readFileStream = File.OpenRead(item.Path);
+
+					await readFileStream.CopyToAsync(entryStream);
+				}
+			}
+
+			return new Result<FileDto>
+			{
+				IsSuccssfull = true,
+				Data = new FileDto()
+				{
+					FileName = fileName,
+					ContentType = "application/zip",
+					Stream = File.OpenRead(path)
+				}
+			};
+		}
+
+		public async Task<Result<DataDto>> Insert(IFormFile file)
+		{
+			var transaction = _db.Database.BeginTransaction();
 
             try
             {
@@ -186,7 +262,16 @@ namespace CloudDrive.Services.Files
             {
                 var entity = _db.Data.Find(id);
 
-                _db.Data.Remove(entity);
+				if (entity == null)
+				{
+					return new Result
+					{
+						Message = "Item not found",
+						IsSuccssfull = false,
+					};
+				}
+
+				_db.Data.Remove(entity);
 
                 await _db.SaveChangesAsync();
 
@@ -214,13 +299,7 @@ namespace CloudDrive.Services.Files
                     };
                 }
 
-                _logger.LogInformation(
-                    "Saved '{originalName}' to storage with new name: '{newFileName}'",
-                    entity.OriginalFileName,
-                    entity.NewFileName
-                );
-
-                transaction.Commit();
+				transaction.Commit();
 
                 return new Result
                 {
@@ -234,12 +313,14 @@ namespace CloudDrive.Services.Files
 
                 transaction.Rollback();
 
-                return new Result
-                {
-                    Message = "Error while trying to remove file due to technical reason with code: " + ex.HResult,
-                    IsSuccssfull = false,
-                };
-            }
-        }
-    }
+				return new Result
+				{
+					Message = "Error while trying to remove file due to technical reason with code: " + ex.HResult,
+					IsSuccssfull = false,
+				};
+			}
+		}
+
+	}
+
 }

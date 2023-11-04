@@ -46,6 +46,19 @@ namespace CloudDrive.Controllers
 			return NotFound(result);
 		}
 
+		[HttpGet("DownloadAll")]
+		public async Task<IActionResult> DownloadAll()
+		{
+			var result = await _filesService.DownloadAll();
+
+			if (result.IsSuccssfull)
+			{
+				return File(result.Data.Stream, result.Data.ContentType, result.Data.FileName);
+			}
+
+			return NotFound(result);
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> Post([FromForm] IFormFile file)
 		{
@@ -58,7 +71,6 @@ namespace CloudDrive.Controllers
 
 			return BadRequest(result);
 		}
-
 
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)

@@ -2,14 +2,17 @@ using CloudDrive.Api.Middleware;
 using CloudDrive.Api.Workers;
 using CloudDrive.Domain.Entities;
 using CloudDrive.Persistence;
-using CloudDrive.Services.CreditCards;
+using CloudDrive.Services;
 using CloudDrive.Services.Files;
+using CloudDrive.Services.Users;
+using CloudDrive.Services.Notebooks;
 using CloudDrive.Services.Note;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.Validation.AspNetCore;
 using Quartz;
 using static OpenIddict.Abstractions.OpenIddictConstants;
+using CloudDrive.Services.CreditCards;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,12 +27,21 @@ builder
 	.Services
 	.AddScoped<IFilesService, FilesService>()
 	.AddScoped<INotesService, NotesService>()
-	.AddScoped<ICreditCardsServices,UserCreditCards>();
+	.AddScoped<ICreditCardsServices,UserCreditCards>()
+	.AddScoped<IUserPasswordsService, UserPasswordsService>()
+	.AddScoped<INotesService, NotesService>();
+
+builder
+	.Services
+	.AddScoped<INotebooksService, NotebooksService>();
+
 
 builder.Services.AddSingleton(new FileConfigurations()
 {
 	FileSavePath = builder.Configuration["FileSavePath"]
 });
+
+builder.Services.AddSingleton<BackgroundWorkService>();
 
 builder
 	.Services
@@ -130,6 +142,10 @@ builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 
 builder.Services.AddHostedService<InitWorker>();
+
+builder.Services.AddHostedService<TimerWorker>();
+
+builder.Services.AddHostedService<WorkQueueWorker>();
 
 var app = builder.Build();
 
