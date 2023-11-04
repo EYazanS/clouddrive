@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using OpenIddict.Validation.AspNetCore;
 using Quartz;
 using static OpenIddict.Abstractions.OpenIddictConstants;
+using CloudDrive.Services.CreditCards;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder
 	.Services
 	.AddScoped<IFilesService, FilesService>()
+	.AddScoped<INotesService, NotesService>()
+	.AddScoped<ICreditCardsServices,UserCreditCards>()
 	.AddScoped<IUserPasswordsService, UserPasswordsService>()
 	.AddScoped<INotesService, NotesService>();
 
