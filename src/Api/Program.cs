@@ -4,7 +4,7 @@ using CloudDrive.Domain.Entities;
 using CloudDrive.Persistence;
 using CloudDrive.Services;
 using CloudDrive.Services.Files;
-using CloudDrive.Services.Users;
+using CloudDrive.Services.UserPasswords;
 using CloudDrive.Services.Notebooks;
 using CloudDrive.Services.Note;
 using Microsoft.AspNetCore.Identity;

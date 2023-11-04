@@ -4,7 +4,7 @@ using CloudDrive.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace CloudDrive.Services.Users
+namespace CloudDrive.Services.UserPasswords
 {
 	public interface IUserPasswordsService
 	{
