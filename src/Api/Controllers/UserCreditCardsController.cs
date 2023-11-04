@@ -2,7 +2,7 @@
 
 namespace clouddrive.Controllers
 {
-    [Route("UserCreditCards/")]
+    [Route("UserCreditCards")]
     public class UserCreditCardsController : Controller
     {
         public IActionResult Index()
