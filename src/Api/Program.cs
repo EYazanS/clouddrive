@@ -5,6 +5,7 @@ using CloudDrive.Persistence;
 using CloudDrive.Services;
 using CloudDrive.Services.Files;
 using CloudDrive.Services.Users;
+using CloudDrive.Services.Notebooks;
 using CloudDrive.Services.Note;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,11 @@ builder
 	.AddScoped<IFilesService, FilesService>()
 	.AddScoped<IUserPasswordsService, UserPasswordsService>()
 	.AddScoped<INotesService, NotesService>();
+
+builder
+	.Services
+	.AddScoped<INotebooksService, NotebooksService>();
+
 
 builder.Services.AddSingleton(new FileConfigurations()
 {
