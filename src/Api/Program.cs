@@ -1,8 +1,11 @@
+using CloudDrive.Api.Middleware;
 using CloudDrive.Api.Workers;
 using CloudDrive.Domain.Entities;
 using CloudDrive.Persistence;
+using CloudDrive.Services;
 using CloudDrive.Services.Files;
 using CloudDrive.Services.Notebooks;
+using CloudDrive.Services.Note;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.Validation.AspNetCore;
@@ -20,7 +23,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder
 	.Services
-	.AddScoped<IFilesService, FilesService>();
+	.AddScoped<IFilesService, FilesService>()
+	.AddScoped<INotesService, NotesService>();
 
 builder
 	.Services
@@ -31,6 +35,8 @@ builder.Services.AddSingleton(new FileConfigurations()
 {
 	FileSavePath = builder.Configuration["FileSavePath"]
 });
+
+builder.Services.AddSingleton<BackgroundWorkService>();
 
 builder
 	.Services
@@ -132,6 +138,10 @@ builder.Services.AddControllers();
 
 builder.Services.AddHostedService<InitWorker>();
 
+builder.Services.AddHostedService<TimerWorker>();
+
+builder.Services.AddHostedService<WorkQueueWorker>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -141,6 +151,12 @@ if (!app.Environment.IsDevelopment())
 	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 	app.UseHsts();
 }
+
+app.UsePerformance();
+
+app.UseErrorHandeling();
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
