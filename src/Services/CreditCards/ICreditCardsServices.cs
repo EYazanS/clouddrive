@@ -2,6 +2,7 @@
 using CloudDrive.Domain.Entities;
 using CloudDrive.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Services.CreditCards;
 using System;
 using System.Collections.Generic;
@@ -13,99 +14,123 @@ namespace CloudDrive.Services.CreditCards
 {
     public interface ICreditCardsServices
     {
-        Task<Result<CreditCardsDto>> GetUserCreditCardAsync(int id);
-        Task<Result<List<CreditCardsDto>>> GetUserCreditCardsForUserAsync(int id);
-        Task<Result<CreditCardsDto>> CreateUserCreditCard(UserCreditCard userCreditCard);
-        Task<Result> DeleteUserCreditCardAsync(int id);
-        Task<Result<CreditCardsDto>> UpdateUserCreditCardAsync(int id, UserCreditCard userCreditCard);
+        Task<Result<CreditCardsDto>> GetAsync(int id);
+        Task<Result<List<CreditCardsDto>>> GetAllAsync(int id);
+        Task<Result<CreditCardsDto>> InsertAsync(UserCreditCard userCreditCard);
+        Task<Result> DeleteAsync(int id);
+        Task<Result<CreditCardsDto>> UpdateAsync(int id, CreditCardsDto userCreditCard);
     }
 
-    public class UserCreditCardsImpl : ICreditCardsServices
+    public class UserCreditCards : ICreditCardsServices
     {
         //Connect the Database 
         private readonly AppDbContext _appDbContext;
-        public UserCreditCardsImpl(AppDbContext appDbContext)
+        private readonly ILogger<UserCreditCards> _logger;
+        public UserCreditCards(AppDbContext appDbContext, ILogger<UserCreditCards> logger)
         {
             _appDbContext = appDbContext;
+            _logger = logger;
         }
 
 
-        public async Task<Result<CreditCardsDto>> CreateUserCreditCard(UserCreditCard userCreditCard)
+        public async Task<Result<CreditCardsDto>> InsertAsync(UserCreditCard userCreditCard)
         {
-            _appDbContext.UserCreditCards.Add(userCreditCard);
-            await _appDbContext.SaveChangesAsync();
-            return new Result<CreditCardsDto>
+            var transaction = _appDbContext.Database.BeginTransaction();
+            try
             {
-                IsSuccssfull = true,
-                Data = new CreditCardsDto
-                {
-                    HolderName = userCreditCard.HolderName,
-                    CreditCardNumber = userCreditCard.CreditCardNumber,
-                    CardSecretCode = userCreditCard.CreditCardSecretCode,
-                    ExpireMonth = userCreditCard.ExpireMonth,
-                    ExpireYear = userCreditCard.ExpireYear,
-                }
-            };
-
-        }
-
-        public async Task<Result> DeleteUserCreditCardAsync(int id)
-        {
-            var CardToDelete = _appDbContext.UserCreditCards.Where(x=>x.Id == id).FirstOrDefault();
-            if (CardToDelete != null)
-            {
-                _appDbContext.UserCreditCards.Remove(CardToDelete);
+                _appDbContext.UserCreditCards.Add(userCreditCard);
+                _logger.LogInformation("Inserted new Credit Card '{cardNumber}' with holder name '{holderName}'", userCreditCard.CreditCardNumber, userCreditCard.HolderName);
                 await _appDbContext.SaveChangesAsync();
-                return new Result
+                transaction.Commit();
+                return new Result<CreditCardsDto>
                 {
                     IsSuccssfull = true,
-                    Message = "successfuly removed credit card # "+id+" from database"
+                    Data = new CreditCardsDto(userCreditCard)
                 };
             }
-            else
+            catch (Exception ex)
             {
-                return new Result
+                _logger.LogError("Failed to Save Credit Card with Number '{CardNumber}' because of exceptions: '{Message}'", userCreditCard.CreditCardNumber, ex.Message);
+                transaction.Rollback();
+                return new Result<CreditCardsDto>
                 {
                     IsSuccssfull = false,
-                    Message = "card not found in database"
+                    Message = "Error while trying to save Credit Card due to technical reason with code " + ex.HResult
                 };
             }
-            
-            
+
+        }
+
+        public async Task<Result> DeleteAsync(int id)
+        {
+            var transaction = _appDbContext.Database.BeginTransaction();
+            try
+            {
+                var CardToDelete = _appDbContext.UserCreditCards.Find(id);
+                if (CardToDelete != null)
+                {
+                    _appDbContext.UserCreditCards.Remove(CardToDelete);
+                    _logger.LogInformation("Deleted Credit Card with id '{id}'", id);
+                    await _appDbContext.SaveChangesAsync();
+                    transaction.Commit();
+                    return new Result
+                    {
+                        IsSuccssfull = true,
+                        Message = "successfuly removed credit card # " + id + " from database"
+                    };
+                }
+                else
+                {
+                    return new Result
+                    {
+                        IsSuccssfull = false,
+                        Message = "card not found in database"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Failed to delete Credit Card with id '{id}' because of exception '{message}'", id, ex.Message);
+                transaction.Rollback();
+                return new Result
+                {
+                    Message = "Error while trying to delete Credit Card due to technical reason with code: " + ex.HResult,
+                    IsSuccssfull = false,
+                };
+            }
+
+
         }
         /*
          Gets Credit Card for one user by the Cards Id 
          */
-        public async Task<Result<CreditCardsDto>> GetUserCreditCardAsync(int id)
+        public async Task<Result<CreditCardsDto>> GetAsync(int id)
         {
             var userCredit = await _appDbContext.UserCreditCards.FindAsync(id);
             if (userCredit == null)
             {
-                return new Result<CreditCardsDto> { IsSuccssfull = false, Message = "No Credit Card found !" };
+                return new Result<CreditCardsDto>
+                {
+                    IsSuccssfull = false,
+                    Message = "No Credit Card found !"
+                };
             }
             else
             {
                 return new Result<CreditCardsDto>
                 {
                     IsSuccssfull = true,
-                    Data = new CreditCardsDto
-                    {
-                        CardSecretCode = userCredit.CreditCardSecretCode,
-                        CreditCardNumber = userCredit.CreditCardNumber,
-                        ExpireMonth = userCredit.ExpireMonth,
-                        ExpireYear = userCredit.ExpireYear,
-                        HolderName = userCredit.HolderName
-                    }
+                    Data = new CreditCardsDto(userCredit)
                 };
             }
         }
         /*
          Gets All the Credit Cards for one user
          */
-        public async Task< Result<List<CreditCardsDto>> > GetUserCreditCardsForUserAsync(int id)
+        public async Task<Result<List<CreditCardsDto>>> GetAllAsync(int id)
         {
             List<UserCreditCard> cards = await _appDbContext.UserCreditCards.Where(x => x.UserId == id).ToListAsync();
-            if(cards.Count == 0 | cards == null)
+            if (cards.Count == 0 | cards == null)
             {
                 return new Result<List<CreditCardsDto>>
                 {
@@ -114,38 +139,55 @@ namespace CloudDrive.Services.CreditCards
                 };
             }
             List<CreditCardsDto> cardsDtos = new List<CreditCardsDto>();
-            foreach(var Card in cards)
+            foreach (var Card in cards)
             {
-                
-                cardsDtos.Add(new CreditCardsDto().ToCreditCardsDto(Card));
+
+                cardsDtos.Add(new CreditCardsDto(Card));
             }
-            return new Result<List< CreditCardsDto>> { IsSuccssfull = true, Data = cardsDtos };
+            return new Result<List<CreditCardsDto>> { IsSuccssfull = true, Data = cardsDtos };
         }
 
-        public async Task<Result<CreditCardsDto>> UpdateUserCreditCardAsync(int id, UserCreditCard userCreditCard)
+        public async Task<Result<CreditCardsDto>> UpdateAsync(int id, CreditCardsDto userCreditCard)
         {
+            var transaction = _appDbContext.Database.BeginTransaction();
             try
             {
-                var card = await _appDbContext.UserCreditCards.SingleOrDefaultAsync(x => x.Id == id);
-                card.CreditCardNumber = userCreditCard.CreditCardNumber;
-                card.CreditCardSecretCode = userCreditCard.CreditCardSecretCode;
-                card.ExpireMonth = userCreditCard.ExpireMonth;
-                card.ExpireYear = userCreditCard.ExpireYear;
-                card.HolderName = userCreditCard.HolderName;
-                _appDbContext.UserCreditCards.Update(card);
-                await _appDbContext.SaveChangesAsync();
-                var data = new CreditCardsDto().ToCreditCardsDto(card);
-                return new Result<CreditCardsDto>
+                var card = await _appDbContext.UserCreditCards.FindAsync(id);
+                if (card == null)
                 {
-                    IsSuccssfull = true,
-                    Data = data
-                };
+                    _logger.LogError("Credit Card with id '{id}' was not found", id);
+                    return new Result<CreditCardsDto> { IsSuccssfull = false, Message = "No Credit Card Found With id = " + id };
+                }
+                else
+                {
+                    card.CreditCardNumber = userCreditCard.CreditCardNumber;
+                    card.ExpireMonth = userCreditCard.ExpireMonth;
+                    card.ExpireYear = userCreditCard.ExpireYear;
+                    card.HolderName = userCreditCard.HolderName;
+                    _appDbContext.UserCreditCards.Update(card);
+                    await _appDbContext.SaveChangesAsync();
+                    _logger.LogInformation("Update Card id '{id}' with Card number '{number}' holder name '{name}'", id, card.CreditCardNumber, card.HolderName);
+                    transaction.Commit();
+                    var data = new CreditCardsDto(card);
+                    return new Result<CreditCardsDto>
+                    {
+                        IsSuccssfull = true,
+                        Data = data
+                    };
+                }
             }
             catch (Exception ex)
             {
-                return new Result<CreditCardsDto> { IsSuccssfull = false, Message = ex.Message };
+                _logger.LogError("Failed to Update Card id '{id}' because of exception: '{message}'", id, ex.HResult);
+                transaction.Rollback();
+
+                return new Result<CreditCardsDto>
+                {
+                    IsSuccssfull = false,
+                    Message = ex.Message
+                };
             }
-            
+
         }
     }
 }

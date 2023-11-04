@@ -24,7 +24,7 @@ builder
 	.Services
 	.AddScoped<IFilesService, FilesService>()
 	.AddScoped<INotesService, NotesService>()
-	.AddScoped<ICreditCardsServices,UserCreditCardsImpl>();
+	.AddScoped<ICreditCardsServices,UserCreditCards>();
 
 builder.Services.AddSingleton(new FileConfigurations()
 {

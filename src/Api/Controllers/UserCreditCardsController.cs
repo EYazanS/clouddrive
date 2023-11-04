@@ -1,6 +1,8 @@
 ﻿using CloudDrive.Domain.Entities;
 using CloudDrive.Services.CreditCards;
 using Microsoft.AspNetCore.Mvc;
+using Services.CreditCards;
+
 namespace clouddrive.Controllers
 {
     [Route("/api/UserCreditCards")]
@@ -11,82 +13,87 @@ namespace clouddrive.Controllers
         {
             _creditCardsService = creditCardsService;
         }
-      
+
         [HttpGet("{id}")]
         /*
          * Get CreditCard for the user 
          */
         public async Task<IActionResult> GetCreditCard(int id)
         {
-            try
+            var userCreditCard = await _creditCardsService.GetAsync(id);
+
+
+            if (userCreditCard == null)
             {
-                var userCreditCard = await _creditCardsService.GetUserCreditCardAsync(id);
-                if (userCreditCard == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    return Ok(userCreditCard);
-                }
-            } catch (Exception ex)
-            {
-                return StatusCode(500, ex);
+                return NotFound(userCreditCard);
             }
+            else
+            {
+                return Ok(userCreditCard);
+            }
+
         }
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetUserCreditCards(int userId)
         {
-            try
+            var userCreditCards = await _creditCardsService.GetAllAsync(userId);
+
+            if(userCreditCards.IsSuccssfull)
             {
-                var userCreditCards = await _creditCardsService.GetUserCreditCardsForUserAsync(userId);
                 return Ok(userCreditCards);
-            }catch (Exception ex)
+            }
+            else
             {
-                return NotFound(ex);
+                return NotFound(userCreditCards);
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult>CreateUserCreditCard([FromBody] UserCreditCard userCreditCard)
+        public async Task<IActionResult> CreateUserCreditCard([FromBody] UserCreditCard userCreditCard)
         {
-            try
-            {
-                await _creditCardsService.CreateUserCreditCard(userCreditCard);
-                return Ok(userCreditCard);
+            var result = await _creditCardsService.InsertAsync(userCreditCard);
 
-            }catch(Exception ex)
+            if(result.IsSuccssfull)
             {
-                return BadRequest(ex); 
+                return Ok(result);
+
+            }
+            else
+            {
+                return BadRequest(result);
             }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUserCreditCard(int id, [FromBody] UserCreditCard userCreditCard)
-        { 
-            try
+        public async Task<IActionResult> UpdateUserCreditCard(int id, [FromBody] CreditCardsDto userCreditCard)
+        {
+            var result = await _creditCardsService.UpdateAsync(id, userCreditCard);
+            if(result.IsSuccssfull)
             {
-                return Ok(await _creditCardsService.UpdateUserCreditCardAsync(id, userCreditCard));
-            }catch(Exception ex)
-            {
-                return NotFound(ex);
+                return Ok(result);
             }
-            
+            else
+            {
+                return NotFound(result); ;
+            }
+
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserCreditCard(int id)
         {
-            try
+            var result = await _creditCardsService.DeleteAsync(id);
+            if( result.IsSuccssfull)
             {
-                
-                return Ok(await _creditCardsService.DeleteUserCreditCardAsync(id));
-            }catch(Exception ex)
+
+                return Ok(result);
+            }
+            else
             {
-                return NotFound(ex);
+                return NotFound(result);
             }
         }
 
-        
+
     }
 }

@@ -1,12 +1,6 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\src",
-    "\\src\\Api",
-    "\\src\\Services",
-    "\\src\\Services\\CreditCards",
-    "\\src\\Services\\Files"
+    ""
   ],
-  "SelectedNode": "\\src\\Services\\CreditCards\\ICreditCardsServices.cs",
   "PreviewInSolutionExplorer": false
 }

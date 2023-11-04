@@ -12,19 +12,19 @@ namespace Services.CreditCards
         public string HolderName { get; set; }
         public string CreditCardNumber { get; set; }
         public string CardSecretCode { get; set; }
-        public string ExpireMonth { get; set; }
-        public string ExpireYear { get; set; }
+        public int ExpireMonth { get; set; }
+        public int ExpireYear { get; set; }
 
-        public CreditCardsDto ToCreditCardsDto(UserCreditCard userCreditCard)
+
+        public CreditCardsDto (UserCreditCard userCreditCard)
         {
-            return new CreditCardsDto
-            {
-                HolderName = userCreditCard.HolderName,
-                ExpireMonth = userCreditCard.ExpireMonth,
-                ExpireYear = userCreditCard.ExpireYear,
-                CreditCardNumber = userCreditCard.CreditCardNumber,
-                CardSecretCode = userCreditCard.CreditCardSecretCode
-            };
+
+            this.HolderName = userCreditCard.HolderName;
+            this.ExpireMonth = userCreditCard.ExpireMonth;
+            this.ExpireYear = userCreditCard.ExpireYear;
+            this.CreditCardNumber = userCreditCard.CreditCardNumber;
+            this.CardSecretCode = userCreditCard.CreditCardSecretCode;
+            
         }
 
     }
