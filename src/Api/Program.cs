@@ -4,6 +4,7 @@ using CloudDrive.Domain.Entities;
 using CloudDrive.Persistence;
 using CloudDrive.Services;
 using CloudDrive.Services.Files;
+using CloudDrive.Services.Users;
 using CloudDrive.Services.Notebooks;
 using CloudDrive.Services.Note;
 using Microsoft.AspNetCore.Identity;
@@ -24,6 +25,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder
 	.Services
 	.AddScoped<IFilesService, FilesService>()
+	.AddScoped<IUserPasswordsService, UserPasswordsService>()
 	.AddScoped<INotesService, NotesService>();
 
 builder
