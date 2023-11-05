@@ -81,6 +81,7 @@ namespace CloudDrive.Services.Note
 		public async Task<Result<NoteDto>> Insert(NoteDto note)
 		{
 			var transaction = _db.Database.BeginTransaction();
+
 			try
 			{
 				var data = new Notes
@@ -93,6 +94,7 @@ namespace CloudDrive.Services.Note
 
 				_db.Notes.Add(data);
 
+				await _db.SaveChangesAsync();
 
 				_logger.LogInformation(
 					"Inserted '{title}' with tags '{tags}' created on '{createDate}' by user '{userId}' to database with id: {id}",
@@ -102,7 +104,6 @@ namespace CloudDrive.Services.Note
 					data.UserId,
 					data.Id
 				);
-				await _db.SaveChangesAsync();
 
 				transaction.Commit();
 
@@ -153,15 +154,15 @@ namespace CloudDrive.Services.Note
 
 				_db.Notes.Remove(data);
 
-
 				_logger.LogInformation(
 					"Deleted note with id: {id}",
 					data.Id
 				);
-				
+
 				await _db.SaveChangesAsync();
 
 				transaction.Commit();
+
 				return new Result
 				{
 					Message = "Deleted",
@@ -185,9 +186,11 @@ namespace CloudDrive.Services.Note
 		public async Task<Result<NoteDto>> Update(NoteDto notes)
 		{
 			var transaction = _db.Database.BeginTransaction();
+
 			try
 			{
 				var data = await _db.Notes.FindAsync(notes.Id);
+
 				if (data == null)
 				{
 					return new Result<NoteDto>
@@ -201,7 +204,9 @@ namespace CloudDrive.Services.Note
 				data.Tags = notes.Tags;
 				data.CreateDate = notes.CreateDate;
 				data.UserId = notes.UserId;
+
 				_db.Notes.Update(data);
+
 				await _db.SaveChangesAsync();
 
 				_logger.LogInformation(

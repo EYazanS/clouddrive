@@ -1,0 +1,38 @@
+@using CloudDrive.Services.Note
+@model NoteDto
+
+<html>
+
+<head>
+	<title>
+		Note page - Cloud drive
+	</title>
+</head>
+
+<body>
+	<h1 style="color: gray">
+		Note Create page
+	</h1>
+
+	<form asp-action="Create" method="post">	
+		<div>
+			<label asp-for="Title"></label>
+			<input asp-for="Title" type="text" placeholder="Title" />
+			<span asp-validation-for="Title" class="text-danger"></span>
+		</div>
+
+		<div>
+			<label for="tags">
+				Tags
+			</label>
+
+			<input id="tags" name="tags" type="text" placeholder="Tags" />
+		</div>
+
+		<button type="submit">
+			Save
+		</button>
+	</form>
+</body>
+
+</html>
