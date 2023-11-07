@@ -1,27 +1,16 @@
 @using CloudDrive.Services.Files
 @model List<DataDto>
 
-<html>
+@{
+	Layout = "/Views/Shared/_Layout.cshtml";
+	ViewData["PageTitle"] = "Landing";
+}
 
-<head>
-	<title>
-		Home page - Cloud drive
-	</title>
-</head>
-
-<body>
-	<h1 style="color: red">
-		Home page
-	</h1>
-
-	<ol>
-		@foreach (var item in Model)
-		{
-			<li>
-				@item.FileName
-			</li>
-		}
-	</ol>
-</body>
-
-</html>
+<ol>
+	@foreach (var item in Model)
+	{
+		<li>
+			@item.FileName
+		</li>
+	}
+</ol>

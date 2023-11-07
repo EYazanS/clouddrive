@@ -6,20 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 namespace CloudDrive.Controllers.Api
 {
 	[Route("/api/Notes")]
-	public class NotesController : ControllerBase
+	public class ApiNotesController : ControllerBase
 	{
 		private readonly INotesService _service;
 
-		public NotesController(INotesService ControllerService)
+		public ApiNotesController(INotesService ControllerService)
 		{
 			_service = ControllerService;
 		}
 
-		[HttpGet]
-		public async Task<IActionResult> Get()
-		{
-			return Ok(await _service.Get());
-		}
+		// [HttpGet]
+		// public async Task<IActionResult> Get()
+		// {
+		// 	return Ok(await _service.Get());
+		// }
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> Get(int id)
@@ -65,7 +65,7 @@ namespace CloudDrive.Controllers.Api
 		[HttpPut("{id}")]
 		public async Task<IActionResult> Put([FromRoute] int id, [FromBody] NoteDto note)
 		{
-			var result = await _service.Update(note);
+			var result = await _service.Update(id, note);
 
 			if (result.IsSuccssfull)
 			{

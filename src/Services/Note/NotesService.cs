@@ -12,8 +12,8 @@ namespace CloudDrive.Services.Note
 		Task<List<NoteDto>> Get();
 		Task<Result<NoteDto>> Get(int id);
 		Task<Result<NoteDto>> Insert(NoteDto notes);
+		Task<Result<NoteDto>> Update(int id, NoteDto notes);
 		Task<Result> Delete(int id);
-		Task<Result<NoteDto>> Update(NoteDto notes);
 	}
 
 	public class NotesService : INotesService
@@ -183,13 +183,13 @@ namespace CloudDrive.Services.Note
 			}
 		}
 
-		public async Task<Result<NoteDto>> Update(NoteDto notes)
+		public async Task<Result<NoteDto>> Update(int id, NoteDto notes)
 		{
 			var transaction = _db.Database.BeginTransaction();
 
 			try
 			{
-				var data = await _db.Notes.FindAsync(notes.Id);
+				var data = await _db.Notes.FindAsync(id);
 
 				if (data == null)
 				{
@@ -202,7 +202,6 @@ namespace CloudDrive.Services.Note
 
 				data.Title = notes.Title;
 				data.Tags = notes.Tags;
-				data.CreateDate = notes.CreateDate;
 				data.UserId = notes.UserId;
 
 				_db.Notes.Update(data);

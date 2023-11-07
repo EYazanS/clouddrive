@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace CloudDrive.Controllers.Api
 {
 	[Route("api/user-passwords")]
-	public class UserPasswordsController : ControllerBase
+	public class ApiUserPasswordsController : ControllerBase
 	{
 		private readonly IUserPasswordsService _service;
-		public UserPasswordsController(IUserPasswordsService service)
+		public ApiUserPasswordsController(IUserPasswordsService service)
 		{
 			_service = service;
 		}

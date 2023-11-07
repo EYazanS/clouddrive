@@ -5,11 +5,11 @@ namespace CloudDrive.Controllers
 {
 	[Route("/api/Notebooks")]
 
-	public class NotebookController : ControllerBase
+	public class NotebooksController : ControllerBase
 	{
 		private readonly INotebooksService _service;
 
-		public NotebookController(INotebooksService service)
+		public NotebooksController(INotebooksService service)
 		{
 			_service = service;
 		}

@@ -27,7 +27,7 @@ builder
 	.Services
 	.AddScoped<IFilesService, FilesService>()
 	.AddScoped<INotesService, NotesService>()
-	.AddScoped<ICreditCardsServices,UserCreditCards>()
+	.AddScoped<ICreditCardsServices, UserCreditCards>()
 	.AddScoped<IUserPasswordsService, UserPasswordsService>()
 	.AddScoped<INotesService, NotesService>();
 
@@ -176,5 +176,10 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.MapControllers();
+
+app.MapGet("/api/notes", async (INotesService service) =>
+{
+	return await service.Get();
+});
 
 app.Run();

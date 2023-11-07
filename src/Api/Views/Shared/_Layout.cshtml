@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>
+		@ViewData["PageTitle"] - Cloud drive
+	</title>
+</head>
+
+<body>
+	<h1 style="color: gray">
+		@ViewData["PageTitle"] page
+	</h1>
+
+	<nav>
+		<a asp-controller="Home" asp-action="Get">
+			Cloud drive
+		</a>
+
+		<a asp-area="Notes" asp-page="/Index">
+			Notes
+		</a>
+
+		<a asp-controller="UserPasswords" asp-action="Get">
+			User passwords
+		</a>
+	</nav>
+
+	<div class="">
+		@RenderBody()
+	</div>
+</body>
+
+</html>

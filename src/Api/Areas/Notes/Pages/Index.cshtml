@@ -1,0 +1,20 @@
+@page
+
+@model CloudDrive.Api.Areas.Notes.Pages.IndexPage
+
+@{
+	Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<a asp-area="Notes" asp-page="/Form">
+	Add note
+</a>
+
+<ol>
+	@foreach (var item in Model.Notes)
+	{
+		<li>
+			@item.Title
+		</li>
+	}
+</ol>
