@@ -6,22 +6,40 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CloudDrive.Api.Areas.Notes.Pages
 {
-	public class IndexPage : PageModel
-	{
-		private readonly INotesService _service;
+    public class IndexPage : PageModel
+    {
+        private readonly INotesService _service;
 
-		public List<NoteDto> Notes { get; set; }
+        public List<NoteDto> Notes { get; set; }
 
-		public IndexPage(
-			INotesService service
-		)
-		{
-			_service = service;
-		}
+        [BindProperty(SupportsGet = true)]
+        public int Id { get; set; }
 
-		public async Task OnGet()
-		{
-			Notes = await _service.Get();
-		}
-	}
+        public IndexPage(INotesService service)
+        {
+            _service = service;
+        }
+
+        public async Task OnGet()
+        {
+            ViewData["PageTitle"] = "Index page";
+
+            Notes = await _service.Get();
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            if (Id > 0)
+            {
+                await _service.Delete(Id);
+            }
+
+            return LocalRedirect("/notes");
+        }
+    }
 }

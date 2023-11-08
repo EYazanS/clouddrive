@@ -1,4 +1,4 @@
-@page
+@page	
 
 @model CloudDrive.Api.Areas.Notes.Pages.IndexPage
 
@@ -16,5 +16,10 @@
 		<li>
 			@item.Title
 		</li>
+		<div>
+			<a asp-page-handler="delete" asp-route-id="item.Id">Delete</a>
+			<a>Edit</a>
+		</div>
+		
 	}
 </ol>
