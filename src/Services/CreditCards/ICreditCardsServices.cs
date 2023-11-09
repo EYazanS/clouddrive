@@ -14,6 +14,7 @@ namespace CloudDrive.Services.CreditCards
 {
     public interface ICreditCardsServices
     {
+        Task<Result<List<CreditCardsDto>>> ListAllUsersAsync();
         Task<Result<CreditCardsDto>> GetAsync(int id);
         Task<Result<List<CreditCardsDto>>> GetAllAsync(int id);
         Task<Result<CreditCardsDto>> InsertAsync(UserCreditCard userCreditCard);
@@ -32,6 +33,25 @@ namespace CloudDrive.Services.CreditCards
             _logger = logger;
         }
 
+        public async Task<Result<List<CreditCardsDto>>> ListAllUsersAsync()
+        {
+            var cards = await _appDbContext.UserCreditCards.GroupBy(c => c.UserId).Select(g=> g.First()).ToListAsync();
+            if (cards.Count == 0 | cards == null)
+            {
+                return new Result<List<CreditCardsDto>>
+                {
+                    IsSuccssfull = false,
+                    Message = "There are no useres that have credit cards"
+                };
+            }
+            List<CreditCardsDto> cardsDtos = new List<CreditCardsDto>();
+            foreach (var Card in cards)
+            {
+
+                cardsDtos.Add(new CreditCardsDto(Card));
+            }
+            return new Result<List<CreditCardsDto>> { IsSuccssfull = true, Data = cardsDtos };
+        }
 
         public async Task<Result<CreditCardsDto>> InsertAsync(UserCreditCard userCreditCard)
         {
@@ -129,7 +149,7 @@ namespace CloudDrive.Services.CreditCards
          */
         public async Task<Result<List<CreditCardsDto>>> GetAllAsync(int id)
         {
-            List<UserCreditCard> cards = await _appDbContext.UserCreditCards.Where(x => x.UserId == id).ToListAsync();
+            List<UserCreditCard> cards =  _appDbContext.UserCreditCards.Where(x => x.UserId == id).ToList();
             if (cards.Count == 0 | cards == null)
             {
                 return new Result<List<CreditCardsDto>>

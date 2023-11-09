@@ -1,0 +1,50 @@
+﻿@page "/userCredit/user/{id}"
+@model clouddrive.Areas.UserCreditCards.Pages.IndexModel
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["PageTitle"] = "Index";
+}
+
+<h2>List all Credit Cards for user</h2>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Holder Name</th>
+      <th>Card Number</th>
+      <th>Expire Date</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+        @if(Model.Cards.IsSuccssfull){
+            @foreach(var card in Model.Cards.Data)
+            {
+                <tr>
+                    <td>@card.Id</td>
+                    <td>@card.HolderName</td>
+                    <td>@card.CreditCardNumber</td>
+                    <td>@card.ExpireMonth / @card.ExpireYear</td>
+                    <td>
+                        <a asp-area="UserCreditCards" asp-page="Edit" asp-page-handler="Update" asp-route-id="@card.Id">Edit</a> | 
+                        <a asp-area="UserCreditCards" asp-page="Delete" asp-route-id="@card.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">@Model.Cards.Message</td>
+            </tr>
+         
+        }
+
+  <tr></tr>
+  <tr>
+      <td>                <a asp-area="UserCreditCards" asp-page="Edit" asp-page-handler="Update" >Add new </a>
+</td>
+  </tr>
+  </tbody>
+</table>
+
