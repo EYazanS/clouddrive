@@ -1,0 +1,28 @@
+﻿@page "/userCredit"
+@model clouddrive.Areas.UserCreditCards.Pages.UserListModel
+@{
+}
+
+<h2>List of All users </h2>
+<table>
+    <thead>
+        <tr>
+            <th>UserId</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach(var user in Model.users.Data)
+        {
+            <tr>
+                <td>@user.userId</td>
+                <td>@user.HolderName</td>
+                <td>
+                    <a asp-area="UserCreditCards" asp-page="Index" asp-page-handler="user" asp-route-id="@user.userId">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

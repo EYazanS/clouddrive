@@ -1,0 +1,25 @@
+@page "/user-passwords/delete/{id?}"
+
+@model CloudDrive.Api.Areas.UserPasswords.Pages.DeletePage
+
+@{
+	Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-area="UserPasswords" asp-page="/Delete" asp-route-id="Id" method="post">
+	<p>Are you sure you want to delete the user with the following information: </p>
+	<input asp-for="UserPassword.Id" type="hidden">
+	<label>Title: </label>
+	@Model.UserPassword.Title
+	<br></br>
+
+	<label>User Name: </label>
+	@Model.UserPassword.Username
+	<br></br>
+
+	<label>Creation Date: </label>
+	@Model.UserPassword.CreateDate
+	<br></br>
+
+	<button type="submit">Delete</button>
+</form>

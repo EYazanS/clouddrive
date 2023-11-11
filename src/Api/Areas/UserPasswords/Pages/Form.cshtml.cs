@@ -1,24 +1,25 @@
-using CloudDrive.Services.Note;
+using CloudDrive.Services.UserPasswords;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace CloudDrive.Api.Areas.Notes.Pages
+namespace CloudDrive.Api.Areas.UserPasswords.Pages
 {
 	public class FormPage : PageModel
 	{
-		private readonly INotesService _service;
+		private readonly IUserPasswordsService _service;
 
 		[BindProperty]
-		public NoteDto Note { get; set; }
+		public UserPasswordFormDto UserPassword { get; set; }
 
 		[BindProperty(SupportsGet = true)]
 		public int Id { get; set; }
 
 		public FormPage(
-			INotesService service
+			IUserPasswordsService service
 		)
 		{
 			_service = service;
+			UserPassword = new UserPasswordFormDto();
 		}
 
 		public void OnGetCreate()
@@ -32,11 +33,12 @@ namespace CloudDrive.Api.Areas.Notes.Pages
 
 			if (Id > 0)
 			{
-				var result = await _service.Get(Id);
+				var result = await _service.GetAsync(Id);
 
 				if (result.IsSuccssfull)
 				{
-					Note = result.Data;
+					UserPassword.Title = result.Data.Title;
+					UserPassword.Username = result.Data.Username;
 				}
 			}
 		}
@@ -50,14 +52,14 @@ namespace CloudDrive.Api.Areas.Notes.Pages
 
 			if (Id > 0)
 			{
-				await _service.Update(Id, Note);
+				await _service.UpdateAsync(Id, UserPassword);
 			}
 			else
 			{
-				await _service.Insert(Note);
+				await _service.InsertAsync(UserPassword);
 			}
 
-			return LocalRedirect("/notes");
+			return LocalRedirect("/user-passwords");
 		}
 	}
 }

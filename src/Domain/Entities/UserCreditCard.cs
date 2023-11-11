@@ -3,7 +3,7 @@
     public class UserCreditCard
     {
         public int Id { get; set; }
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
         public string CreditCardNumber { get; set; }
         public string CreditCardSecretCode { get; set; } //CVV
         public string HolderName { get; set; }

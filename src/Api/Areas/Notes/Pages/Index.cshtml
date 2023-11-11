@@ -15,6 +15,13 @@
 	{
 		<li>
 			@item.Title
+			<a asp-area="Notes" asp-page="/Form" asp-route-handler="update" asp-route-id="@item.Id">
+				Update
+			</a>
+			<a asp-area="Notes" asp-page="/Form" asp-route-handler="create" asp-route-id="@item.Id">
+				Delete
+			</a>
 		</li>
+
 	}
 </ol>

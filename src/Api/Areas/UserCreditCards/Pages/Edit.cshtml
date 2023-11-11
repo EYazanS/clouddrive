@@ -1,0 +1,41 @@
+﻿@page "/userCredit/{handler}/{id?}"
+@model clouddrive.Areas.UserCreditCards.Pages.EditModel
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<form asp-area="UserCreditCards" asp-page="/Edit" asp-route-id="Id" method="post">
+    @{
+        if(Model.cardsDto != null)
+        {
+            <input asp-for="cardsDto.userId" />
+        }
+    }
+    <div>
+        <div>
+            <label asp-for="cardsDto.userId"></label>
+            <input asp-for="cardsDto.userId" />
+        </div>
+        <div>
+            <label asp-for="cardsDto.CreditCardNumber"></label>
+            <input asp-for="cardsDto.CreditCardNumber" />
+        </div>
+        <div>
+            <label asp-for="cardsDto.ExpireMonth"></label>
+            <input asp-for="cardsDto.ExpireMonth" />
+        </div>
+        <div>
+            <label asp-for="cardsDto.ExpireYear"></label>
+            <input asp-for="cardsDto.ExpireYear" />
+        </div>
+        <div>
+            <label asp-for="cardsDto.HolderName"></label>
+            <input asp-for="cardsDto.HolderName" />
+        </div>
+        <div>
+            <label asp-for="cardsDto.CardSecretCode"></label>
+            <input asp-for="cardsDto.CardSecretCode" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success">Submit</button>
+</form>
+
