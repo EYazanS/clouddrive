@@ -1,0 +1,26 @@
+@page
+
+@model CloudDrive.Api.Areas.Notebooks.Pages.IndexPage
+
+@{
+	Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<a asp-area="Notebooks" asp-page="/Form" asp-page-handler="create">
+	Add note
+</a>
+
+<ol>
+	@foreach (var item in Model.Notebooks)
+	{
+		<li>
+			@item.Name
+			<div>
+				<a asp-area="Notebooks" asp-page="/Delete" asp-route-id="@item.Id">Delete</a>
+				<a asp-area="Notebooks" asp-page="/Form" asp-page-handler="Update" asp-route-id="@item.Id">Edit</a>
+			</div>
+		</li>
+
+
+	}
+</ol>
