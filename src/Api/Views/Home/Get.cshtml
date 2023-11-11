@@ -3,14 +3,24 @@
 
 @{
 	Layout = "/Views/Shared/_Layout.cshtml";
-	ViewData["PageTitle"] = "Landing";
+	ViewData["PageTitle"] = "Files";
 }
 
-<ol>
+<form action="/api/Files" method="post">
+	<input type="file" name="file" id="file" />
+	<button type="submit">
+		Save
+	</button>
+</form>
+
+<ol class="flex space-x-4">
 	@foreach (var item in Model)
 	{
-		<li>
-			@item.FileName
+		<li class="">
+			<a href="/api/files/Download/@item.Id" download="download" class="block transition-all duration-200 cursor-pointer h-16 p-4 border active:bg-primary-800 border-primary-400 shadow-sm 
+			rounded-md font-bold hover:bg-primary-400 hover:text-white hover:shadow-2xl">
+				@item.FileName
+			</a>
 		</li>
 	}
 </ol>

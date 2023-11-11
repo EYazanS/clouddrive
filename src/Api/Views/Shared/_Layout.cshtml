@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="" lang="en">
 
 <head>
 	<meta charset="UTF-8">
@@ -8,30 +8,47 @@
 	<title>
 		@ViewData["PageTitle"] - Cloud drive
 	</title>
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/tailwind.css">
 </head>
 
-<body>
-	<h1 style="color: gray">
-		@ViewData["PageTitle"] page
-	</h1>
+<body class="bg-gray-100 dark:bg-slate-800 dark:text-slate-400">
+	<div class="container m-auto mt-4">
+		<h1
+			class="text-5xl font-bold text-center font-mono tracking-widest text-primary-500 dark:text-primary-400 mb-10 mt-8">
+			@ViewData["PageTitle"]
+		</h1>
 
-	<nav>
-		<a asp-controller="Home" asp-action="Get">
-			Cloud drive
-		</a>
+		<button id="toggle-menu" class="block md:hidden btn-primary">
+			menu
+		</button>
 
-		<a asp-area="Notes" asp-page="/Index">
-			Notes
-		</a>
+		<nav id="nav"
+			class="hidden px-4 py-2 text-lg md:flex flex-col md:flex-row md:space-x-4 text-gray-500 dark:text-slate-200">
+			<a asp-controller="Home" asp-action="Get" class="nav-bill">
+				Cloud drive
+			</a>
 
-		<a asp-controller="UserPasswords" asp-action="Get">
-			User passwords
-		</a>
-	</nav>
+			<a asp-area="Notes" asp-page="/Index" class="nav-bill">
+				Notes
+			</a>
 
-	<div class="">
-		@RenderBody()
+			<a asp-controller="UserPasswords" asp-action="Get" class="nav-bill">
+				User passwords
+			</a>
+
+			<button class="nav-bill text-left" id="toggle-darkmode">
+				Toggle Dark mode
+			</button>
+		</nav>
+
+		<div class="">
+			@RenderBody()
+		</div>
 	</div>
+
+	<script src="/site.js"></script>
 </body>
 
 </html>
