@@ -23,7 +23,6 @@ function handleUpload(event) {
   button.innerText = "Uploading";
 
   axios.post(form.action, formData).then((res) => {
-    console.log(res);
     let list = document.getElementById("files-list");
     let newLi = document.createElement("li");
     let newA = document.createElement("a");
