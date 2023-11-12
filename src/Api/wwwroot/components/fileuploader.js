@@ -53,6 +53,14 @@ class FileUploader extends HTMLElement {
     }
   }
 
+  connectedCallback() {
+    this.label.for = this.id;
+    this.uploader.id = this.id;
+    this.label.id = this.id + "-label";
+    this.preview.id = this.id + "-preview";
+    this.uploader.name = this.name;
+  }
+
   createUploader() {
     this.uploader = document.createElement("input");
     this.uploader.type = "file";
