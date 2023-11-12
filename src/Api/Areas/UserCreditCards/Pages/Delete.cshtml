@@ -1,0 +1,33 @@
+﻿@page "/userCredit/Delete/{Id}"
+@model clouddrive.Areas.UserCreditCards.Pages.DeleteModel
+@{
+        Layout = "/Views/Shared/_Layout.cshtml";
+
+}
+
+<form asp-area="UserCreditCards" asp-page="Delete" asp-route-id="Id" method="post">
+    <input asp-for="credirCard.Data.Id" hidden />
+    <div>
+        <div>
+            <label asp-for="credirCard.Data.CreditCardNumber"></label>
+            <input asp-for="credirCard.Data.CreditCardNumber" disabled/>
+        </div>
+        <div>
+            <label asp-for="credirCard.Data.ExpireMonth"></label>
+            <input asp-for="credirCard.Data.ExpireMonth" disabled/>
+        </div>
+        <div>
+            <label asp-for="credirCard.Data.ExpireYear"></label>
+            <input asp-for="credirCard.Data.ExpireYear" disabled/>
+        </div>
+        <div>
+            <label asp-for="credirCard.Data.HolderName"></label>
+            <input asp-for="credirCard.Data.HolderName" disabled/>
+        </div>
+        <div>
+            <label asp-for="credirCard.Data.CardSecretCode"></label>
+            <input asp-for="credirCard.Data.CardSecretCode" disabled />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success">Delete</button>
+</form>

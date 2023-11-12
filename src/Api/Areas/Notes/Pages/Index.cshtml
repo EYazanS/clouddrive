@@ -6,7 +6,7 @@
 	Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-<a asp-area="Notes" asp-page="/Form" asp-page-handler="create">
+<a asp-area="Notes" asp-page="/Form" asp-page-handler="Create">
 	Add note
 </a>
 
@@ -15,11 +15,12 @@
 	{
 		<li>
 			@item.Title
+			<a asp-area="Notes" asp-page="/Form" asp-route-handler="update" asp-route-id="@item.Id">
+				Update
+			</a>
+			<a asp-area="Notes" asp-page="/Form" asp-route-handler="create" asp-route-id="@item.Id">
+				Delete
+			</a>
 		</li>
-		<div>
-			<a asp-page-handler="delete" asp-route-id="item.Id">Delete</a>
-			<a>Edit</a>
-		</div>
-		
 	}
 </ol>

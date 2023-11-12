@@ -19,10 +19,10 @@ namespace CloudDrive.Api.Areas.Notes.Pages
             _service = service;
         }
 
-        public void OnGetCreate()
-        {
-            ViewData["PageTitle"] = "On Create";
-        }
+		public void OnGetCreate()
+		{
+			ViewData["PageTitle"] = "On Create";
+		}
 
         public async Task OnGetUpdateAsync()
         {

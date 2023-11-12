@@ -1,0 +1,20 @@
+﻿@model CloudDrive.Domain.Entities.UserCreditCard
+@{
+    ViewData["Title"] = "Create";
+
+}
+<h1>Create</h1>
+<form asp-action="Create" method="post" asp-controller="UserCreditCards">
+    <label asp-for="CreditCardNumber"></label>
+    <input asp-for="CreditCardNumber" />
+    <div>
+        <label asp-for="ExpireMonth"></label>
+        <input asp-for="ExpireMonth" />
+        <label asp-for="ExpireYear"></label>
+        <input asp-for="ExpireYear" />
+    </div>
+    <label asp-for="HolderName"></label>
+    <input asp-for="HolderName" />
+    <label asp-for="CreditCardSecretCode"></label>
+    <input asp-for="CreditCardSecretCode" />
+</form>
