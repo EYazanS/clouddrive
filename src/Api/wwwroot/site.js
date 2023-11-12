@@ -15,8 +15,12 @@ function handleUpload(event) {
   event.preventDefault();
 
   var form = document.getElementById("upload-form");
+  var button = document.getElementById("upload-form-button");
 
   var formData = new FormData(form);
+
+  button.setAttribute("disabled", true);
+  button.innerText = "Uploading";
 
   axios.post(form.action, formData).then((res) => {
     console.log(res);
@@ -28,6 +32,8 @@ function handleUpload(event) {
 
     newA.href = `/api/files/Download/${res.data.data.id}`;
     newA.innerText = res.data.data.fileName;
+    button.removeAttribute("disabled");
+    button.innerText = "Save";
 
     liClasses.split(" ").forEach((cls) => newA.classList.add(cls));
   });
