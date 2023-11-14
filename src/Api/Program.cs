@@ -188,7 +188,16 @@ builder.Services.AddHostedService<WorkQueueWorker>();
 
 var app = builder.Build();
 
-app.UseRequestLocalization();
+var supportedCultures = new[] { "ar", "en" };
+
+var localizationOptions = new RequestLocalizationOptions()
+	.SetDefaultCulture(supportedCultures[0])
+	.AddSupportedCultures(supportedCultures)
+	.AddSupportedUICultures(supportedCultures);
+
+localizationOptions.ApplyCurrentCultureToResponseHeaders = true;
+
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
