@@ -13,6 +13,11 @@ using OpenIddict.Validation.AspNetCore;
 using Quartz;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 using CloudDrive.Services.CreditCards;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Reflection;
+using CloudDrive;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,17 +40,51 @@ builder
 	.Services
 	.AddScoped<INotebooksService, NotebooksService>();
 
-
 builder.Services.AddSingleton(new FileConfigurations()
 {
 	FileSavePath = builder.Configuration["FileSavePath"]
 });
+
+builder
+	.Services
+	.AddLocalization(options => options.ResourcesPath = "Resources");
 
 builder.Services.AddSingleton<BackgroundWorkService>();
 
 builder
 	.Services
 	.AddAuthentication(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
+
+builder
+	.Services
+	.Configure<RequestLocalizationOptions>(options =>
+	{
+		CultureInfo[] supportedCultures = new[]
+		{
+			new CultureInfo("ar"),
+			new CultureInfo("en")
+		};
+
+		options.DefaultRequestCulture = new RequestCulture(culture: "en", uiCulture: "ar");
+		options.SupportedCultures = supportedCultures;
+		options.RequestCultureProviders = new List<IRequestCultureProvider>
+		{
+			new CookieRequestCultureProvider()
+		};
+	});
+
+builder.Services
+	.AddControllersWithViews()
+	.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+	.AddDataAnnotationsLocalization(options =>
+	{
+		options.DataAnnotationLocalizerProvider = (type, factory) =>
+		{
+			var assemblyName = new AssemblyName(typeof(Resource).GetTypeInfo().Assembly.FullName);
+			return factory.Create("SharedResource", assemblyName.Name);
+		};
+	});
+
 
 // Register the Identity services.
 builder
@@ -148,6 +187,8 @@ builder.Services.AddHostedService<TimerWorker>();
 builder.Services.AddHostedService<WorkQueueWorker>();
 
 var app = builder.Build();
+
+app.UseRequestLocalization();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
