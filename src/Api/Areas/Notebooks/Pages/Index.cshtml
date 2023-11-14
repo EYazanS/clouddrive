@@ -5,22 +5,25 @@
 @{
 	Layout = "/Views/Shared/_Layout.cshtml";
 }
+<div class="my-10 mx-10">
+	<a asp-area="Notebooks" asp-page="/Form" class="btn-primary w-fit px-5 py-2" asp-page-handler="create">
+		Add note
+	</a>
 
-<a asp-area="Notebooks" asp-page="/Form" asp-page-handler="create">
-	Add note
-</a>
-
-<ol>
-	@foreach (var item in Model.Notebooks)
-	{
-		<li>
-			@item.Name
-			<div>
-				<a asp-area="Notebooks" asp-page="/Delete" asp-route-id="@item.Id">Delete</a>
-				<a asp-area="Notebooks" asp-page="/Form" asp-page-handler="Update" asp-route-id="@item.Id">Edit</a>
-			</div>
-		</li>
+	<ol>
+		@foreach (var item in Model.Notebooks)
+		{
+			<li class="my-8 list-decimal ml-10 text-l font-bold font-mono">
+				@item.Name
+				<div class="inline-flex ml-3">
+					<a asp-area="Notebooks" asp-page="/Delete" class="mr-3 text-primary-600 hover:underline"
+						asp-route-id="@item.Id">Delete</a>
+					<a asp-area="Notebooks" asp-page="/Form" class="text-primary-600 hover:underline"
+						asp-page-handler="Update" asp-route-id="@item.Id">Edit</a>
+				</div>
+			</li>
 
 
-	}
-</ol>
+		}
+	</ol>
+</div>

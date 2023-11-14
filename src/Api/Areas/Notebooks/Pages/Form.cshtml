@@ -6,26 +6,32 @@
 	Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-<form asp-area="Notebooks" asp-page="/Form" asp-route-id="Id" method="post">
-	<div>
-		<label asp-for="Notebook.Name"></label>
-		<input asp-for="Notebook.Name" type="text" placeholder="Name" />
+<form asp-area="Notebooks" class="ml-10 mt-5 w-full max-w-sm" asp-page="/Form" asp-route-id="Id" method="post">
+	<div class="mb-5">
+		<label class="text-primary-500 font-bold md:text-right mb-1 md:mb-0 pr-4" asp-for="Notebook.Name"></label>
+		<input asp-for="Notebook.Name"
+			class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary-500"
+			type="text" placeholder="Name" />
 		<span asp-validation-for="Notebook.Name" class="text-danger"></span>
 	</div>
 
-	<div>
-		<label asp-for="Notebook.Category"></label>
-		<input asp-for="Notebook.Category" type="text" placeholder="Category" />
+	<div class="mb-5">
+		<label class="text-primary-500 font-bold md:text-right mb-1 md:mb-0 pr-4" asp-for="Notebook.Category"></label>
+		<input
+			class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary-500"
+			asp-for="Notebook.Category" type="text" placeholder="Category" />
 		<span asp-validation-for="Notebook.Category" class="text-danger"></span>
 	</div>
 
-	<div>
-		<label asp-for="Notebook.Color"></label>
-		<input asp-for="Notebook.Color" type="text" placeholder="Color" />
+	<div class="mb-5">
+		<label class="text-primary-500 font-bold md:text-right mb-1 md:mb-0 pr-4" asp-for="Notebook.Color"></label>
+		<input
+			class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary-500"
+			asp-for="Notebook.Color" type="text" placeholder="Color" />
 		<span asp-validation-for="Notebook.Color" class="text-danger"></span>
 	</div>
 
-	<button type="submit">
+	<button type="submit" class="btn-primary w-fit px-5 py-2 ">
 		Save
 	</button>
 </form>
