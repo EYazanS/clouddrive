@@ -47,7 +47,10 @@ builder.Services.AddSingleton(new FileConfigurations()
 
 builder
 	.Services
-	.AddLocalization(options => options.ResourcesPath = "Resources");
+	.AddLocalization(options =>
+	{
+		options.ResourcesPath = "Resources";
+	});
 
 builder.Services.AddSingleton<BackgroundWorkService>();
 
@@ -73,15 +76,16 @@ builder
 		};
 	});
 
-builder.Services
+builder
+	.Services
 	.AddControllersWithViews()
 	.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
 	.AddDataAnnotationsLocalization(options =>
 	{
 		options.DataAnnotationLocalizerProvider = (type, factory) =>
 		{
-			var assemblyName = new AssemblyName(typeof(Resource).GetTypeInfo().Assembly.FullName);
-			return factory.Create("SharedResource", assemblyName.Name);
+			var assemblyName = new AssemblyName(typeof(SharedResource).GetTypeInfo().Assembly.FullName);
+			return factory.Create("Resource", assemblyName.Name);
 		};
 	});
 

@@ -1,6 +1,6 @@
 namespace CloudDrive
 {
-	public class Resource
+	public class SharedResource
 	{
 
 	}

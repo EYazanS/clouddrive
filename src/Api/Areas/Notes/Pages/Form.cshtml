@@ -7,7 +7,7 @@
 	Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-@inject IHtmlLocalizer<CloudDrive.Resource> Localizer
+@inject IHtmlLocalizer<CloudDrive.SharedResource> Localizer
 
 <span>
 	@Thread.CurrentThread.CurrentUICulture.Name
@@ -30,7 +30,7 @@
 		Save
 	</button>
 
-	<a asp-area="/Notes" asp-page="/Index">
+	<a asp-area="Notes" asp-page="/Index">
 		@Localizer["Cancel_txt"]
 	</a>
 </form>

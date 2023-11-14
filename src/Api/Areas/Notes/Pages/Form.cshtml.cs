@@ -14,15 +14,12 @@ namespace CloudDrive.Api.Areas.Notes.Pages
 
 		[BindProperty(SupportsGet = true)]
 		public int Id { get; set; }
-		public IStringLocalizer<Resource> Localizer { get; }
 
 		public FormPage(
-			INotesService service,
-			IStringLocalizer<Resource> localizer
+			INotesService service
 		)
 		{
 			_service = service;
-			Localizer = localizer;
 		}
 
 		public void OnGetCreate()
