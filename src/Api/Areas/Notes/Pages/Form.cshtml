@@ -1,13 +1,14 @@
 @page "/notes/{handler}/{id?}"
+@using CloudDrive;
+@using Microsoft.AspNetCore.Mvc.Localization;
 @model CloudDrive.Api.Areas.Notes.Pages.FormPage
 
-@using Microsoft.AspNetCore.Mvc.Localization
 
 @{
 	Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-@inject IHtmlLocalizer<CloudDrive.SharedResource> Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 <span>
 	@Thread.CurrentThread.CurrentUICulture.Name
@@ -31,6 +32,6 @@
 	</button>
 
 	<a asp-area="Notes" asp-page="/Index">
-		@Localizer["Cancel_txt"]
+		@Localizer["Test"]
 	</a>
 </form>
