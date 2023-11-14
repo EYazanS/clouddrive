@@ -1,23 +1,31 @@
+using System.Globalization;
+using System.Reflection;
+
+using CloudDrive;
 using CloudDrive.Api.Middleware;
 using CloudDrive.Api.Workers;
 using CloudDrive.Domain.Entities;
 using CloudDrive.Persistence;
 using CloudDrive.Services;
-using CloudDrive.Services.Files;
-using CloudDrive.Services.UserPasswords;
-using CloudDrive.Services.Notebooks;
-using CloudDrive.Services.Note;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using OpenIddict.Validation.AspNetCore;
-using Quartz;
-using static OpenIddict.Abstractions.OpenIddictConstants;
 using CloudDrive.Services.CreditCards;
-using System.Globalization;
+using CloudDrive.Services.Files;
+using CloudDrive.Services.Note;
+using CloudDrive.Services.Notebooks;
+using CloudDrive.Services.UserPasswords;
+
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
-using System.Reflection;
-using CloudDrive;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+
+using OpenIddict.Validation.AspNetCore;
+
+using Quartz;
+
+using static OpenIddict.Abstractions.OpenIddictConstants;
+
+[assembly: RootNamespace("CloudDrive")]
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,7 +55,10 @@ builder.Services.AddSingleton(new FileConfigurations()
 
 builder
 	.Services
-	.AddLocalization(options => options.ResourcesPath = "Resources");
+	.AddLocalization(options =>
+	{
+		options.ResourcesPath = "Resources";
+	});
 
 builder.Services.AddSingleton<BackgroundWorkService>();
 
@@ -73,15 +84,16 @@ builder
 		};
 	});
 
-builder.Services
+builder
+	.Services
 	.AddControllersWithViews()
 	.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
 	.AddDataAnnotationsLocalization(options =>
 	{
 		options.DataAnnotationLocalizerProvider = (type, factory) =>
 		{
-			var assemblyName = new AssemblyName(typeof(Resource).GetTypeInfo().Assembly.FullName);
-			return factory.Create("SharedResource", assemblyName.Name);
+			var assemblyName = new AssemblyName(typeof(SharedResource).GetTypeInfo().Assembly.FullName);
+			return factory.Create("Resource", assemblyName.Name);
 		};
 	});
 

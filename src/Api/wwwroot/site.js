@@ -85,13 +85,11 @@ function ToggleLanguage(expDays) {
     document.cookie = newValue;
   }
 
-  //Refresh page
-
+  // Refresh page
   location.reload(true);
 }
 
 document.getElementById("toggle-darkmode").onclick = toggleDarkMode;
 document.getElementById("toggle-language").onclick = ToggleLanguage;
 document.getElementById("toggle-menu").onclick = toggleMenu;
-
 document.getElementById("upload-form").onsubmit = handleUpload;
