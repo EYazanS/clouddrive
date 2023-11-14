@@ -12,6 +12,8 @@
 	<link rel="stylesheet" href="/css/style.css">
 	<link rel="stylesheet" href="/css/tailwind.css">
 
+	@RenderSection("Style", false)
+
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
@@ -35,7 +37,7 @@
 			<a asp-area="Notes" asp-page="/Index" class="nav-bill">
 				Notes
 			</a>
-			
+
 			<a asp-area="Notebooks" asp-page="/Index" class="nav-bill">
 				Notebooks
 			</a>
@@ -47,12 +49,18 @@
 			<button class="nav-bill text-left" id="toggle-darkmode">
 				Toggle Dark mode
 			</button>
+
+			<button class="nav-bill text-left" id="toggle-language">
+				Toggle Language
+			</button>
 		</nav>
 
 		<div class="">
 			@RenderBody()
 		</div>
 	</div>
+
+	@RenderSection("Scripts", false)
 
 	<script src="/components/fileuploader.js"></script>
 	<script src="/site.js"></script>

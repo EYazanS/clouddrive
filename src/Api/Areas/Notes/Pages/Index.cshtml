@@ -1,4 +1,4 @@
-@page	
+@page
 
 @model CloudDrive.Api.Areas.Notes.Pages.IndexPage
 
@@ -24,3 +24,17 @@
 		</li>
 	}
 </ol>
+
+@section Scripts {
+	<script>
+		document.getElementById('test').innerText = "FROM JAVASCRIPT";
+	</script>
+}
+
+@section Style {
+	<style>
+		#test {
+			color: red;
+		}
+	</style>
+}
