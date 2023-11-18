@@ -13,18 +13,19 @@
 	<ol>
 		@foreach (var item in Model.Notebooks)
 		{
-			<li class="my-8 list-decimal ml-10 text-l font-bold font-mono dark:text-primary-100">
-				@item.Name
-				<div class="inline-flex ml-3">
-					<a asp-area="Notebooks" asp-page="/Delete"
-						class="mr-3 text-primary-600 hover:underline dark:text-primary-400"
-						asp-route-id="@item.Id">Delete</a>
-					<a asp-area="Notebooks" asp-page="/Form" class="text-primary-600 hover:underline dark:text-primary-400"
-						asp-page-handler="Update" asp-route-id="@item.Id">Edit</a>
-				</div>
-			</li>
+			@* <li class="my-8 list-decimal ml-10 text-l font-bold font-mono dark:text-primary-100">
+		@item.Name
+		<div class="inline-flex ml-3">
+		<a asp-area="Notebooks" asp-page="/Delete"
+		class="mr-3 text-primary-600 hover:underline dark:text-primary-400"
+		asp-route-id="@item.Id">Delete</a>
 
-			<list-item>hello</list-item>
+		<a asp-area="Notebooks" asp-page="/Form" class="text-primary-600 hover:underline dark:text-primary-400"
+		asp-page-handler="Update" asp-route-id="@item.Id">Edit</a>
+		</div>
+		</li> *@
+
+			<my-list-item name="@item.Name" item-id="@item.Id"></my-list-item>
 
 		}
 	</ol>
