@@ -1,5 +1,3 @@
-console.log("list item");
-
 class NotebookItem extends HTMLElement {
   divClass = "flex space-x-2";
   aClass = "text-primary-600 hover:underline dark:text-primary-400";
