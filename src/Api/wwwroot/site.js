@@ -92,4 +92,7 @@ function ToggleLanguage(expDays) {
 document.getElementById("toggle-darkmode").onclick = toggleDarkMode;
 document.getElementById("toggle-language").onclick = ToggleLanguage;
 document.getElementById("toggle-menu").onclick = toggleMenu;
-document.getElementById("upload-form").onsubmit = handleUpload;
+let form = document.getElementById("upload-form");
+if (form) {
+  form.onsubmit = handleUpload;
+}

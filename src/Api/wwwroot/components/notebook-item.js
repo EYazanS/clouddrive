@@ -21,8 +21,8 @@ class NotebookItem extends HTMLElement {
 
     this.appendChild(this.div);
     this.div.appendChild(this.span);
-    this.div.appendChild(this.aDelete);
     this.div.appendChild(this.aEdit);
+    this.div.appendChild(this.aDelete);
   }
   static get observedAttributes() {
     return ["name", "item-id"];
