@@ -5,30 +5,22 @@
 @{
 	Layout = "/Views/Shared/_Layout.cshtml";
 }
-<div class="my-10 mx-10">
+<div class="my-10 mx-10 flex flex-col space-y-2">
 	<a asp-area="Notebooks" asp-page="/Form" class="btn-primary w-fit px-5 py-2" asp-page-handler="create">
 		Add note
 	</a>
 
-	<ol>
+	<ol class="flex space-y-2 flex-col">
 		@foreach (var item in Model.Notebooks)
 		{
-			@* <li class="my-8 list-decimal ml-10 text-l font-bold font-mono dark:text-primary-100">
-		@item.Name
-		<div class="inline-flex ml-3">
-		<a asp-area="Notebooks" asp-page="/Delete"
-		class="mr-3 text-primary-600 hover:underline dark:text-primary-400"
-		asp-route-id="@item.Id">Delete</a>
-
-		<a asp-area="Notebooks" asp-page="/Form" class="text-primary-600 hover:underline dark:text-primary-400"
-		asp-page-handler="Update" asp-route-id="@item.Id">Edit</a>
-		</div>
-		</li> *@
-
-			<list-item name="@item.Name" item-id="@item.Id" asp-page-handler="Update"></list-item>
+			<li>
+				<notebook-item name="@item.Name" item-id="@item.Id"></notebook-item>
+			</li>
 
 		}
 	</ol>
 </div>
 
-<script src="./listitem"></script>
+@section Scripts {
+	<script src="/components/notebook-item.js"></script>
+}
