@@ -15,6 +15,7 @@ using CloudDrive.Services.UserPasswords;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
@@ -53,18 +54,18 @@ builder.Services.AddSingleton(new FileConfigurations()
 	FileSavePath = builder.Configuration["FileSavePath"]
 });
 
+builder.Services.AddSingleton<BackgroundWorkService>();
+
+builder
+	.Services
+	.AddAuthentication(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
+
 builder
 	.Services
 	.AddLocalization(options =>
 	{
 		options.ResourcesPath = "Resources";
 	});
-
-builder.Services.AddSingleton<BackgroundWorkService>();
-
-builder
-	.Services
-	.AddAuthentication(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
 
 builder
 	.Services
@@ -206,8 +207,6 @@ var localizationOptions = new RequestLocalizationOptions()
 	.SetDefaultCulture(supportedCultures[0])
 	.AddSupportedCultures(supportedCultures)
 	.AddSupportedUICultures(supportedCultures);
-
-localizationOptions.ApplyCurrentCultureToResponseHeaders = true;
 
 app.UseRequestLocalization(localizationOptions);
 

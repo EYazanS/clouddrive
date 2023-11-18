@@ -1,6 +1,10 @@
 @page "{id}"
 
+@using Microsoft.AspNetCore.Mvc.Localization
+
 @model CloudDrive.Api.Areas.Notebooks.Pages.DeletePage
+
+@inject IHtmlLocalizer<CloudDrive.SharedResource> Localizer
 
 @{
 	Layout = "/Views/Shared/_Layout.cshtml";
@@ -61,7 +65,7 @@
 		</button>
 
 		<a asp-area="Notebooks" asp-page="/Index" class="w-fit px-5 py-2 mt-4">
-			Cancel
+			@Localizer["Cancel"]
 		</a>
 	</form>
 </div>
