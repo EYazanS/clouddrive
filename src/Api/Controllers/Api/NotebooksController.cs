@@ -1,15 +1,15 @@
 using CloudDrive.Services.Notebooks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CloudDrive.Controllers
+namespace CloudDrive.Api.Controllers.Api
 {
 	[Route("/api/Notebooks")]
 
-	public class NotebookController : ControllerBase
+	public class NotebooksController : ControllerBase
 	{
 		private readonly INotebooksService _service;
 
-		public NotebookController(INotebooksService service)
+		public NotebooksController(INotebooksService service)
 		{
 			_service = service;
 		}

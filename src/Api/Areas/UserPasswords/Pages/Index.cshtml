@@ -1,0 +1,37 @@
+@page "/user-passwords"
+
+@model CloudDrive.Api.Areas.UserPasswords.Pages.IndexPage
+
+@{
+	Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<a asp-area="UserPasswords" asp-page="/Form" asp-route-handler="create">
+	Add a user password
+</a>
+
+<ol>
+	@foreach (var item in Model.UserPasswords)
+	{
+		<li>
+			<label>Title: </label>
+			@item.Title
+			<br></br>
+
+			<label>User Name: </label>
+			@item.Username
+			<br></br>
+
+			<label>Creation Date: </label>
+			@item.CreateDate
+			<br></br>
+			<a asp-area="UserPasswords" asp-page="/Form" asp-route-handler="update" asp-route-id="@item.Id">
+				Update
+			</a>
+			<a asp-area="UserPasswords" asp-page="/Delete" asp-route-id="@item.Id">
+				Delete
+			</a>
+			<br></br>
+		</li>
+	}
+</ol>

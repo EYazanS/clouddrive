@@ -2,14 +2,14 @@ using CloudDrive.Services.Files;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IIS.Core;
 
-namespace CloudDrive.Controllers
+namespace CloudDrive.Controllers.Api
 {
 	[Route("/api/Files")]
-	public class FilesController : ControllerBase
+	public class ApiFilesController : ControllerBase
 	{
 		private readonly IFilesService _filesService;
 
-		public FilesController(IFilesService filesService)
+		public ApiFilesController(IFilesService filesService)
 		{
 			_filesService = filesService;
 		}

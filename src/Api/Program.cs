@@ -1,18 +1,32 @@
+using System.Globalization;
+using System.Reflection;
+
+using CloudDrive;
 using CloudDrive.Api.Middleware;
 using CloudDrive.Api.Workers;
 using CloudDrive.Domain.Entities;
 using CloudDrive.Persistence;
 using CloudDrive.Services;
-using CloudDrive.Services.Files;
-using CloudDrive.Services.Users;
-using CloudDrive.Services.Notebooks;
-using CloudDrive.Services.Note;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using OpenIddict.Validation.AspNetCore;
-using Quartz;
-using static OpenIddict.Abstractions.OpenIddictConstants;
 using CloudDrive.Services.CreditCards;
+using CloudDrive.Services.Files;
+using CloudDrive.Services.Note;
+using CloudDrive.Services.Notebooks;
+using CloudDrive.Services.UserPasswords;
+
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+
+using OpenIddict.Validation.AspNetCore;
+
+using Quartz;
+
+using static OpenIddict.Abstractions.OpenIddictConstants;
+
+[assembly: RootNamespace("CloudDrive")]
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,14 +41,13 @@ builder
 	.Services
 	.AddScoped<IFilesService, FilesService>()
 	.AddScoped<INotesService, NotesService>()
-	.AddScoped<ICreditCardsServices,UserCreditCards>()
+	.AddScoped<ICreditCardsServices, UserCreditCards>()
 	.AddScoped<IUserPasswordsService, UserPasswordsService>()
 	.AddScoped<INotesService, NotesService>();
 
 builder
 	.Services
 	.AddScoped<INotebooksService, NotebooksService>();
-
 
 builder.Services.AddSingleton(new FileConfigurations()
 {
@@ -46,6 +59,45 @@ builder.Services.AddSingleton<BackgroundWorkService>();
 builder
 	.Services
 	.AddAuthentication(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
+
+builder
+	.Services
+	.AddLocalization(options =>
+	{
+		options.ResourcesPath = "Resources";
+	});
+
+builder
+	.Services
+	.Configure<RequestLocalizationOptions>(options =>
+	{
+		CultureInfo[] supportedCultures = new[]
+		{
+			new CultureInfo("ar"),
+			new CultureInfo("en")
+		};
+
+		options.DefaultRequestCulture = new RequestCulture(culture: "en", uiCulture: "ar");
+		options.SupportedCultures = supportedCultures;
+		options.RequestCultureProviders = new List<IRequestCultureProvider>
+		{
+			new CookieRequestCultureProvider()
+		};
+	});
+
+builder
+	.Services
+	.AddControllersWithViews()
+	.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+	.AddDataAnnotationsLocalization(options =>
+	{
+		options.DataAnnotationLocalizerProvider = (type, factory) =>
+		{
+			var assemblyName = new AssemblyName(typeof(SharedResource).GetTypeInfo().Assembly.FullName);
+			return factory.Create("Resource", assemblyName.Name);
+		};
+	});
+
 
 // Register the Identity services.
 builder
@@ -149,6 +201,15 @@ builder.Services.AddHostedService<WorkQueueWorker>();
 
 var app = builder.Build();
 
+var supportedCultures = new[] { "ar", "en" };
+
+var localizationOptions = new RequestLocalizationOptions()
+	.SetDefaultCulture(supportedCultures[0])
+	.AddSupportedCultures(supportedCultures)
+	.AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localizationOptions);
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -176,5 +237,10 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.MapControllers();
+
+app.MapGet("/api/notes", async (INotesService service) =>
+{
+	return await service.Get();
+});
 
 app.Run();

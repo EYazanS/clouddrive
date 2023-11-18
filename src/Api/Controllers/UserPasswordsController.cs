@@ -1,78 +1,43 @@
-using CloudDrive.Domain.Entities;
-using CloudDrive.Services.Users;
-using Microsoft.AspNetCore.Mvc;
+// using Microsoft.AspNetCore.Mvc;
+// using CloudDrive.Services.UserPasswords;
+// using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace CloudDrive.Controllers
-{
-	[Route("api/user-passwords")]
-	public class UserPasswordsController : ControllerBase
-	{
-		private readonly IUserPasswordsService _service;
-		public UserPasswordsController(IUserPasswordsService usersService)
-		{
-			_service = usersService;
-		}
+// namespace CloudDrive.Controllers
+// {	
+// 	[Route("/user-passwords")]
+// 	public class UserPasswordsController: Controller
+// 	{	
+// 		private readonly IUserPasswordsService _service;
 
-		[HttpGet]
-		public async Task<IActionResult> Get()
-		{
-			return Ok(await _service.GetAsync());
-		}
+// 		public UserPasswordsController(IUserPasswordsService service)
+// 		{
+// 			_service=service;
+// 		}
 
-		[HttpGet("{id}")]
-		public async Task<IActionResult> Get(int id)
-		{
-			var result = await _service.GetAsync(id);
+// 		[HttpGet]
+// 		public async Task<IActionResult> Get()
+// 		{
+// 			var result = await _service.GetAsync();
+// 			return View(result);
+// 		}
 
-			if (result.IsSuccssfull)
-			{
-				return Ok(result.Data);
-			}
+// 		[HttpGet("create")]
+// 		public IActionResult Create()
+// 		{
+// 			return View("Form");
+// 		}
 
-			return NotFound(result);
-		}
+// 		[HttpPost("create")]
+// 		public async Task<IActionResult> CreatePost(UserPasswordFormDto userPassword)
+// 		{	
+// 			if(!ModelState.IsValid)
+// 			{
+// 				return View("Form");
+// 			}
+	
+// 			await _service.InsertAsync(userPassword);
 
-		[HttpPost]
-		public async Task<IActionResult> Post([FromBody] UserPasswordFormDto user)
-		{
-			var result = await _service.InsertAsync(user);
-
-			if (result.IsSuccssfull)
-			{
-				return Ok(result.Data);
-			}
-
-			return BadRequest(result);
-		}
-
-		[HttpPut("{id}")]
-		public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UserPasswordFormDto user)
-		{
-			var result = await _service.UpdateAsync(id, user);
-
-			if (result.IsSuccssfull)
-			{
-				return Ok(result.Data);
-			}
-			else
-			{
-				return BadRequest(result);
-			}
-		}
-
-		[HttpDelete("{id}")]
-		public async Task<IActionResult> Delete([FromRoute] int id)
-		{
-			var result = await _service.DeleteAsync(id);
-
-			if (result.IsSuccssfull)
-			{
-				return NoContent();
-			}
-			else
-			{
-				return BadRequest(result);
-			}
-		}
-	}
-}
+// 			return LocalRedirect("/user-passwords");
+// 		}
+// 	}
+// }

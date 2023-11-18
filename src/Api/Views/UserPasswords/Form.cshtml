@@ -1,0 +1,45 @@
+@using CloudDrive.Services.UserPasswords
+@model UserPasswordFormDto
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Add a User Password</title>
+</head>
+
+<body>
+	<h1>Add a User Password</h1>
+
+	<form asp-action="Create" method="post">
+		<div>
+			<label asp-for="Title"></label>
+			<input asp-for="Title" type="text" placeholder="Enter the website title">
+			<span asp-validation-for="Title" class="text-danger"></span>
+		</div>
+		<div>
+			<label asp-for="Category"></label>
+			<input asp-for="Category" type="text" placeholder="Enter the category">
+			<span asp-validation-for="Category" class="text-danger"></span>
+		</div>
+		<div>
+			<label asp-for="Site"></label>
+			<input asp-for="Site" type="text" placeholder="Enter the site">
+			<span asp-validation-for="Site" class="text-danger"></span>
+		</div>
+		<div>
+			<label asp-for="Username"></label>
+			<input asp-for="Username" type="text" placeholder="Enter the username">
+			<span asp-validation-for="Username" class="text-danger"></span>
+		</div>
+		<div>
+			<label asp-for="Password"></label>
+			<input asp-for="Password" type="password" placeholder="Enter the password">
+			<span asp-validation-for="Password" class="text-danger"></span>
+		</div>
+		<button type="submit">
+			Submit
+		</button>
+	</form>
+</body>
+
+</html>

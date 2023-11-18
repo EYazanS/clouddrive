@@ -1,0 +1,71 @@
+@page "{id}"
+
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@model CloudDrive.Api.Areas.Notebooks.Pages.DeletePage
+
+@inject IHtmlLocalizer<CloudDrive.SharedResource> Localizer
+
+@{
+	Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div class="flex flex-col space-y-10 mt-10">
+	<p class="text-red-500 font-bold text-xl mb-4 w-full">
+		Are you sure you want to delete the nootebook <span>@Model.Notebook.Name</span>?
+	</p>
+
+	<form asp-area="Notebooks" asp-page="/Delete" asp-route-id="Id" method="post">
+		<input asp-for="Notebook.Id" type="hidden" />
+
+		<div class="mb-5 ">
+			<label
+				class="text-primary-500 font-bold md:text-right mb-1 md:mb-0 pr-4 dark:text-primary-400 w-20 inline-block"
+				asp-for="Notebook.Name">
+			</label>
+
+			<input
+				class="bg-gray-200 dark:bg-slate-800 appearance-none border-2 dark:border-slate-700 rounded py-2 px-4 dark:text-slate-500 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary-500"
+				asp-for="Notebook.Name" type="text" placeholder="Name" disabled />
+
+			<span asp-validation-for="Notebook.Name" class="text-danger">
+			</span>
+		</div>
+
+		<div class="mb-5">
+			<label
+				class=" text-primary-500 font-bold md:text-right mb-1 md:mb-0 pr-4 dark:text-primary-400 w-20 inline-block"
+				asp-for="Notebook.Category">
+			</label>
+
+			<input
+				class="bg-gray-200 dark:bg-slate-800 appearance-none border-2 dark:border-slate-700 rounded py-2 px-4 dark:text-slate-500 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary-500"
+				asp-for="Notebook.Category" type="text" placeholder="Category" disabled />
+
+			<span asp-validation-for="Notebook.Category" class="text-danger">
+			</span>
+		</div>
+
+		<div class="mb-5">
+			<label
+				class=" text-primary-500 font-bold md:text-right mb-1 md:mb-0 pr-4 dark:text-primary-400 w-20 inline-block"
+				asp-for="Notebook.Color">
+			</label>
+
+			<input
+				class="bg-gray-200 dark:bg-slate-800 appearance-none border-2 dark:border-slate-700 rounded py-2 px-4 dark:text-slate-500 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary-500"
+				asp-for="Notebook.Color" type="text" placeholder="Color" disabled />
+
+			<span asp-validation-for="Notebook.Color" class="text-danger">
+			</span>
+		</div>
+
+		<button type="submit" class="btn-primary w-fit px-5 py-2 mt-4">
+			Delete
+		</button>
+
+		<a asp-area="Notebooks" asp-page="/Index" class="w-fit px-5 py-2 mt-4">
+			@Localizer["Cancel"]
+		</a>
+	</form>
+</div>

@@ -1,7 +1,7 @@
 using CloudDrive.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CloudDrive.Api.Controllers
+namespace CloudDrive.Api.Controllers.Api
 {
 	[ApiController, Route("/api/test")]
 	public class BackgroundWorkTestController : ControllerBase

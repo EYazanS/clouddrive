@@ -1,0 +1,37 @@
+@page "/notes/{handler}/{id?}"
+@using CloudDrive;
+@using Microsoft.AspNetCore.Mvc.Localization;
+@model CloudDrive.Api.Areas.Notes.Pages.FormPage
+
+
+@{
+	Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+<span>
+	@Thread.CurrentThread.CurrentUICulture.Name
+</span>
+
+<form asp-area="Notes" asp-page="/Form" asp-route-id="Id" method="post">
+	<div>
+		<label asp-for="Note.Title"></label>
+		<input asp-for="Note.Title" type="text" placeholder="Title" />
+		<span asp-validation-for="Note.Title" class="text-danger"></span>
+	</div>
+
+	<div>
+		<label asp-for="Note.Tags"></label>
+		<input asp-for="Note.Tags" type="text" placeholder="Tags" />
+		<span asp-validation-for="Note.Tags" class="text-danger"></span>
+	</div>
+
+	<button type="submit">
+		Save
+	</button>
+
+	<a asp-area="Notes" asp-page="/Index">
+		@Localizer["Test"]
+	</a>
+</form>

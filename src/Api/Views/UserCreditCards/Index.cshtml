@@ -1,0 +1,30 @@
+﻿@using CloudDrive.Domain;
+@using Services.CreditCards;
+@model Result<List<CreditCardsDto>>
+@{
+    ViewData["Title"] = "List Credit";
+}
+<h2>List all Credit Cards for user</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Holder Name</th>
+      <th>Card Number</th>
+      <th>Expire Date</th>
+    </tr>
+  </thead>
+  <tbody>
+        @foreach(var card in Model.Data)
+        {
+            <tr>
+                <td>@card.HolderName</td>
+                <td>@card.CreditCardNumber</td>
+                <td>@card.ExpireMonth / @card.ExpireYear</td>
+            </tr>
+        }
+
+  
+  </tbody>
+</table>
+
+

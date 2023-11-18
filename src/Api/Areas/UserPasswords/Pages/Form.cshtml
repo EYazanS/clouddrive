@@ -1,0 +1,38 @@
+@page "/user-passwords/{handler}/{id?}"
+
+@model CloudDrive.Api.Areas.UserPasswords.Pages.FormPage
+
+@{
+	Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-area="UserPasswords" asp-page="/Form" asp-route-id="Id" method="post">
+	<div>
+		<label asp-for="UserPassword.Title"></label>
+		<input asp-for="UserPassword.Title" type="text" placeholder="Enter the website title">
+		<span asp-validation-for="UserPassword.Title" class="text-danger"></span>
+	</div>
+	<div>
+		<label asp-for="UserPassword.Category"></label>
+		<input asp-for="UserPassword.Category" type="text" placeholder="Enter the category">
+		<span asp-validation-for="UserPassword.Category" class="text-danger"></span>
+	</div>
+	<div>
+		<label asp-for="UserPassword.Site"></label>
+		<input asp-for="UserPassword.Site" type="text" placeholder="Enter the site">
+		<span asp-validation-for="UserPassword.Site" class="text-danger"></span>
+	</div>
+	<div>
+		<label asp-for="UserPassword.Username"></label>
+		<input asp-for="UserPassword.Username" type="text" placeholder="Enter the username">
+		<span asp-validation-for="UserPassword.Username" class="text-danger"></span>
+	</div>
+	<div>
+		<label asp-for="UserPassword.Password"></label>
+		<input asp-for="UserPassword.Password" type="password" placeholder="Enter the password">
+		<span asp-validation-for="UserPassword.Password" class="text-danger"></span>
+	</div>
+	<button type="submit">
+		Submit
+	</button>
+</form>

@@ -1,0 +1,14 @@
+@using CloudDrive.Services.UserPasswords
+@model List<UserPasswordDto>
+
+@{
+	Layout = "/Views/Shared/_Layout.cshtml";
+	ViewData["PageTitle"] = "User passwords";
+}
+
+<ol>
+	@foreach (var item in Model)
+	{
+		<li>@item.Title</li>
+	}
+</ol>

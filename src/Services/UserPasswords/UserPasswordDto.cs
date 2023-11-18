@@ -1,4 +1,4 @@
-namespace CloudDrive.Services.Users
+namespace CloudDrive.Services.UserPasswords
 {
 	public class UserPasswordDto
 	{
