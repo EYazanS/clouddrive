@@ -5,34 +5,61 @@
 @{
 	Layout = "/Views/Shared/_Layout.cshtml";
 }
+<div class="max-w-md mx-auto bg-white shadow-lg rounded-lg">
+	<form asp-area="UserPasswords" asp-page="/Form" asp-route-id="Id" method="post" class="px-6 py-4">
+		<div class="mb-4">
+			<label asp-for="UserPassword.Site" class="block text-gray-700 text-sm font-bold mb-2">
+				Site
+			</label>
+			<input asp-for="UserPassword.Site" class="shadow border rounded w-full py-2 px-3 text-gray-700" type="text"
+				placeholder="website.com">
+			<span asp-validation-for="UserPassword.Site" class="text-danger"></span>
+		</div>
 
-<form asp-area="UserPasswords" asp-page="/Form" asp-route-id="Id" method="post">
-	<div>
-		<label asp-for="UserPassword.Title"></label>
-		<input asp-for="UserPassword.Title" type="text" placeholder="Enter the website title">
-		<span asp-validation-for="UserPassword.Title" class="text-danger"></span>
-	</div>
-	<div>
-		<label asp-for="UserPassword.Category"></label>
-		<input asp-for="UserPassword.Category" type="text" placeholder="Enter the category">
-		<span asp-validation-for="UserPassword.Category" class="text-danger"></span>
-	</div>
-	<div>
-		<label asp-for="UserPassword.Site"></label>
-		<input asp-for="UserPassword.Site" type="text" placeholder="Enter the site">
-		<span asp-validation-for="UserPassword.Site" class="text-danger"></span>
-	</div>
-	<div>
-		<label asp-for="UserPassword.Username"></label>
-		<input asp-for="UserPassword.Username" type="text" placeholder="Enter the username">
-		<span asp-validation-for="UserPassword.Username" class="text-danger"></span>
-	</div>
-	<div>
-		<label asp-for="UserPassword.Password"></label>
-		<input asp-for="UserPassword.Password" type="password" placeholder="Enter the password">
-		<span asp-validation-for="UserPassword.Password" class="text-danger"></span>
-	</div>
-	<button type="submit">
-		Submit
-	</button>
-</form>
+		<div class="mb-4">
+			<label asp-for="UserPassword.Username" class="block text-gray-700 text-sm font-bold mb-2">
+				Username
+			</label>
+			<input asp-for="UserPassword.Username" class="shadow border rounded w-full py-2 px-3 text-gray-700"
+				type="text" placeholder="will_smith">
+			<span asp-validation-for="UserPassword.Username" class="text-danger"></span>
+		</div>
+
+		<div class="mb-4">
+			<label asp-for="UserPassword.Password" class="block text-gray-700 text-sm font-bold mb-2">
+				Password
+			</label>
+			<input asp-for="UserPassword.Password" class="shadow border rounded w-full py-2 px-3 text-gray-700"
+				type="password" placeholder="********">
+			<span asp-validation-for="UserPassword.Password" class="text-danger"></span>
+		</div>
+
+		<div class="mb-4">
+			<label asp-for="UserPassword.Title" class="block text-gray-700 text-sm font-bold mb-2">
+				Title
+			</label>
+			<input asp-for="UserPassword.Title" class="shadow border rounded w-full py-2 px-3 text-gray-700" type="text"
+				placeholder="Facebook, Google, Ritaj .. etc">
+			<span asp-validation-for="UserPassword.Title" class="text-danger"></span>
+		</div>
+
+		<div class="mb-4">
+			<label asp-for="UserPassword.Category" class="block text-gray-700 text-sm font-bold mb-2">
+				Category
+			</label>
+			<input asp-for="UserPassword.Category" class="shadow border rounded w-full py-2 px-3 text-gray-700"
+				type="text" placeholder="Admin, Member, Owner .. etc">
+			<span asp-validation-for="UserPassword.Category" class="text-danger"></span>
+		</div>
+
+		<div>
+			<button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl">
+				Save
+			</button>
+			<a asp-area="UserPasswords" asp-page="/Index"
+				class="float-right bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-xl">
+				Cancel
+			</a>
+		</div>
+	</form>
+</div>

@@ -6,32 +6,83 @@
 	Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-<a asp-area="UserPasswords" asp-page="/Form" asp-route-handler="create">
-	Add a user password
-</a>
+<p class="mb-7 max-w-fit text-xl bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-lg">
+  <a class="block py-2 px-4" 
+	 asp-area="UserPasswords" 
+	 asp-page="/Form" 
+	 asp-route-handler="create">
+	Add
+  </a>
+</p>
 
-<ol>
-	@foreach (var item in Model.UserPasswords)
-	{
-		<li>
-			<label>Title: </label>
-			@item.Title
-			<br></br>
 
-			<label>User Name: </label>
-			@item.Username
-			<br></br>
+<div>
+  <table class="min-w-full bg-white shadow-md rounded-lg">
+	<thead class="bg-gray-50 border-b border-gray-200">
+	  <tr>
+		<th class="text-left text-l font-bold py-3 pl-4">Site</th>
+		<th class="text-left text-l font-bold py-3 pl-4">Username</th>
+		<th class="text-left text-l font-bold py-3 pl-4">Password</th>
+		<th class="text-left text-l font-bold py-3 pl-4">Creation Date</th>
+		<th class="text-left text-l  py-3 pl-4"></th>
+		<th class="text-left text-l	 py-3 pl-4"></th>
+	  </tr> 
+	</thead>
+	<tbody class="divide-y divide-gray-200">
+			@foreach (var item in Model.UserPasswords)
+			{	
+				<tr>
+					<td class="py-4 pl-4 font-roboto text-blue-500"><a href=https://@item.Site>@item.Site</td>
+					<td class="py-4 pl-4 font-roboto">@item.Username</td>
+					<td class="py-4 pl-4 font-roboto">@item.Password</td>
+					<td class="py-4 pl-4 font-roboto">@item.CreateDate</td>
+					<td class="py-4 pl-4 font-roboto">
+						<p class="max-w-fit bg-blue-500 hover:bg-blue-700 text-white rounded-lg">
+							<a asp-area="UserPasswords" asp-page="/Form" asp-route-handler="update" asp-route-id="@item.Id" class="block py-2 px-4">
+								Update
+							</a>
+						</p>
+					</td>
+					<td class="py-4 pl-4 font-roboto">
+						<p class="max-w-fit bg-red-500 hover:bg-red-700 text-white rounded-lg">
+							<a asp-area="UserPasswords" asp-page="/Delete" asp-route-id="@item.Id" class="block py-2 px-4">
+								Delete
+							</a>
+						</p>
 
-			<label>Creation Date: </label>
-			@item.CreateDate
-			<br></br>
-			<a asp-area="UserPasswords" asp-page="/Form" asp-route-handler="update" asp-route-id="@item.Id">
-				Update
-			</a>
-			<a asp-area="UserPasswords" asp-page="/Delete" asp-route-id="@item.Id">
-				Delete
-			</a>
-			<br></br>
-		</li>
-	}
-</ol>
+					</td>
+				</tr>
+			}
+	</tbody>
+  </table>
+</div>
+
+
+
+
+
+
+
+@* <div class="border-2 rounded-lg p-5 flex space-x-20">
+	<label class="font-bold"></label>
+	<label class="font-bold"></label>
+	<label class="font-bold"></label>
+	<label class="font-bold"></label>
+</div>
+	<ol>
+		<div>
+
+														<li>
+														<div class="flex space-x-20">
+															<p> @item.Site </p>
+															<p> @item.Username </p>
+															<p> @item.Password </p>
+															<p> @item.CreateDate </p>
+
+														</div>
+														</div>
+														</li>
+
+		}
+		</div>
+	</ol> *@

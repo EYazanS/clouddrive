@@ -38,8 +38,9 @@ namespace CloudDrive.Services.UserPasswords
 				usersDtoList.Add(new UserPasswordDto
 				{
 					Id = entity.Id,
-					Title = entity.Title,
+					Site = entity.Site,
 					Username = entity.Username,
+					Password = entity.Password,
 					CreateDate = entity.CreateDate
 				});
 			}
@@ -66,8 +67,9 @@ namespace CloudDrive.Services.UserPasswords
 				Data = new UserPasswordDto
 				{
 					Id = entity.Id,
-					Title = entity.Title,
+					Site = entity.Site,
 					Username = entity.Username,
+					Password = entity.Password,
 					CreateDate = entity.CreateDate
 				}
 			};
@@ -93,8 +95,8 @@ namespace CloudDrive.Services.UserPasswords
 				await _db.SaveChangesAsync();
 
 				_logger.LogInformation(
-					"Saved a new user password to database with title '{Title}' and id: {Id}",
-					entity.Title,
+					"Saved a new user password to database with site '{Site}' and id: {Id}",
+					entity.Site,
 					entity.Id
 				);
 
@@ -108,7 +110,8 @@ namespace CloudDrive.Services.UserPasswords
 					{
 						Id = entity.Id,
 						Username = entity.Username,
-						Title = entity.Title,
+						Password = entity.Password,
+						Site = entity.Site,
 						CreateDate = entity.CreateDate
 					}
 				};
@@ -145,8 +148,8 @@ namespace CloudDrive.Services.UserPasswords
 				}
 
 				_logger.LogInformation(
-					"User password found with title '{Title}' and id: {Id}",
-					entity.Title,
+					"User password found with site '{Site}' and id: {Id}",
+					entity.Site,
 					entity.Id
 				);
 
@@ -170,7 +173,8 @@ namespace CloudDrive.Services.UserPasswords
 					{
 						Id = entity.Id,
 						Username = entity.Username,
-						Title = entity.Title,
+						Password = entity.Password,
+						Site = entity.Site,
 						CreateDate = entity.CreateDate
 					}
 				};
@@ -210,8 +214,8 @@ namespace CloudDrive.Services.UserPasswords
 				await _db.SaveChangesAsync();
 
 				_logger.LogInformation(
-					"Deleted user from database with title '{Title}' and id: {Id}",
-					entity.Title,
+					"Deleted user from database with site '{Site}' and id: {Id}",
+					entity.Site,
 					entity.Id
 				);
 

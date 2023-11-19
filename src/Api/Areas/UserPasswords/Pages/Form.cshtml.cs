@@ -37,8 +37,9 @@ namespace CloudDrive.Api.Areas.UserPasswords.Pages
 
 				if (result.IsSuccssfull)
 				{
-					UserPassword.Title = result.Data.Title;
+					UserPassword.Site = result.Data.Site;
 					UserPassword.Username = result.Data.Username;
+					UserPassword.Password = result.Data.Password;
 				}
 			}
 		}

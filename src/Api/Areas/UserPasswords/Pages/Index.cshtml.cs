@@ -19,7 +19,8 @@ namespace CloudDrive.Api.Areas.UserPasswords.Pages
 		}
 
 		public async Task OnGet()
-		{
+		{	
+			ViewData["PageTitle"] = "User Passwords";
 			UserPasswords = await _service.GetAsync();
 		}
 	}
