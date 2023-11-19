@@ -1,37 +1,29 @@
-﻿@using CloudDrive
-@using Microsoft.AspNetCore.Mvc.Localization
-
-@inject IHtmlLocalizer<SharedResource> Localizer
-
-@{
-	if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
-	{
-		Layout = (string)parentLayout;
-	}
-	else
-	{
-		Layout = "/Areas/Identity/Pages/_Layout.cshtml";
-	}
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
 }
 
-<div class="bg-primary-blue w-full h-48 flex justify-center items-center">
-	<h2 class="text-white text-5xl font-bold container mx-auto">
-		@Localizer["ManageAccount"]
-	</h2>
-</div>
+<h1>Manage your account</h1>
 
-<div class="max-auto container pb-2">
-	<div class="flex flex-wrap sm:flex-nowrap">
-		<div class="w-full sm:w-1/5 p-4">
-			<partial name="_ManageNav" />
-		</div>
-
-		<div class="w-full sm:w-4/5 p-4">
-			@RenderBody()
-		</div>
-	</div>
+<div>
+    <h2>Change your account settings</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <partial name="_ManageNav" />
+        </div>
+        <div class="col-md-9">
+            @RenderBody()
+        </div>
+    </div>
 </div>
 
 @section Scripts {
-	@RenderSection("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
 }

@@ -1,25 +1,26 @@
-﻿using CloudDrive.Domain.Entities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+#nullable disable
 
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-
 namespace CloudDrive.Areas.Identity.Pages.Account.Manage
 {
 	public class DeletePersonalDataModel : PageModel
 	{
-		private readonly UserManager<AppUser> _userManager;
-		private readonly SignInManager<AppUser> _signInManager;
+		private readonly UserManager<Domain.Entities.AppUser> _userManager;
+		private readonly SignInManager<Domain.Entities.AppUser> _signInManager;
 		private readonly ILogger<DeletePersonalDataModel> _logger;
 
 		public DeletePersonalDataModel(
-			UserManager<AppUser> userManager,
-			SignInManager<AppUser> signInManager,
+			UserManager<Domain.Entities.AppUser> userManager,
+			SignInManager<Domain.Entities.AppUser> signInManager,
 			ILogger<DeletePersonalDataModel> logger)
 		{
 			_userManager = userManager;
@@ -27,16 +28,32 @@ namespace CloudDrive.Areas.Identity.Pages.Account.Manage
 			_logger = logger;
 		}
 
+		/// <summary>
+		///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+		///     directly from your code. This API may change or be removed in future releases.
+		/// </summary>
 		[BindProperty]
 		public InputModel Input { get; set; }
 
+		/// <summary>
+		///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+		///     directly from your code. This API may change or be removed in future releases.
+		/// </summary>
 		public class InputModel
 		{
-			[Required(ErrorMessage = "The {0} field is required.")]
+			/// <summary>
+			///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+			///     directly from your code. This API may change or be removed in future releases.
+			/// </summary>
+			[Required]
 			[DataType(DataType.Password)]
 			public string Password { get; set; }
 		}
 
+		/// <summary>
+		///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+		///     directly from your code. This API may change or be removed in future releases.
+		/// </summary>
 		public bool RequirePassword { get; set; }
 
 		public async Task<IActionResult> OnGet()
@@ -73,7 +90,7 @@ namespace CloudDrive.Areas.Identity.Pages.Account.Manage
 			var userId = await _userManager.GetUserIdAsync(user);
 			if (!result.Succeeded)
 			{
-				throw new InvalidOperationException($"Unexpected error occurred deleting user with ID '{userId}'.");
+				throw new InvalidOperationException($"Unexpected error occurred deleting user.");
 			}
 
 			await _signInManager.SignOutAsync();

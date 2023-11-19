@@ -1,38 +1,58 @@
-﻿using CloudDrive.Domain.Entities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+#nullable disable
 
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-
 namespace CloudDrive.Areas.Identity.Pages.Account
 {
-	[AllowAnonymous]
 	public class LoginWithRecoveryCodeModel : PageModel
 	{
-		private readonly SignInManager<AppUser> _signInManager;
+		private readonly SignInManager<Domain.Entities.AppUser> _signInManager;
+		private readonly UserManager<Domain.Entities.AppUser> _userManager;
 		private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
 
-		public LoginWithRecoveryCodeModel(SignInManager<AppUser> signInManager, ILogger<LoginWithRecoveryCodeModel> logger)
+		public LoginWithRecoveryCodeModel(
+			SignInManager<Domain.Entities.AppUser> signInManager,
+			UserManager<Domain.Entities.AppUser> userManager,
+			ILogger<LoginWithRecoveryCodeModel> logger)
 		{
 			_signInManager = signInManager;
+			_userManager = userManager;
 			_logger = logger;
 		}
 
+		/// <summary>
+		///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+		///     directly from your code. This API may change or be removed in future releases.
+		/// </summary>
 		[BindProperty]
 		public InputModel Input { get; set; }
 
+		/// <summary>
+		///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+		///     directly from your code. This API may change or be removed in future releases.
+		/// </summary>
 		public string ReturnUrl { get; set; }
 
+		/// <summary>
+		///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+		///     directly from your code. This API may change or be removed in future releases.
+		/// </summary>
 		public class InputModel
 		{
+			/// <summary>
+			///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+			///     directly from your code. This API may change or be removed in future releases.
+			/// </summary>
 			[BindProperty]
-			[Required(ErrorMessage = "The {0} field is required.")]
+			[Required]
 			[DataType(DataType.Text)]
 			[Display(Name = "Recovery Code")]
 			public string RecoveryCode { get; set; }
@@ -69,6 +89,8 @@ namespace CloudDrive.Areas.Identity.Pages.Account
 
 			var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
 
+			var userId = await _userManager.GetUserIdAsync(user);
+
 			if (result.Succeeded)
 			{
 				_logger.LogInformation("User with ID '{UserId}' logged in with a recovery code.", user.Id);
@@ -76,7 +98,7 @@ namespace CloudDrive.Areas.Identity.Pages.Account
 			}
 			if (result.IsLockedOut)
 			{
-				_logger.LogWarning("User with ID '{UserId}' account locked out.", user.Id);
+				_logger.LogWarning("User account locked out.");
 				return RedirectToPage("./Lockout");
 			}
 			else
