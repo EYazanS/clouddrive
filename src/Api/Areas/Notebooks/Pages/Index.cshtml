@@ -5,22 +5,22 @@
 @{
 	Layout = "/Views/Shared/_Layout.cshtml";
 }
+<div class="my-10 mx-10 flex flex-col space-y-2">
+	<a asp-area="Notebooks" asp-page="/Form" class="btn-primary w-fit px-5 py-2" asp-page-handler="create">
+		Add note
+	</a>
 
-<a asp-area="Notebooks" asp-page="/Form" asp-page-handler="create">
-	Add note
-</a>
+	<ol class="flex space-y-2 flex-col">
+		@foreach (var item in Model.Notebooks)
+		{
+			<li>
+				<notebook-item name="@item.Name" item-id="@item.Id"></notebook-item>
+			</li>
 
-<ol>
-	@foreach (var item in Model.Notebooks)
-	{
-		<li>
-			@item.Name
-			<div>
-				<a asp-area="Notebooks" asp-page="/Delete" asp-route-id="@item.Id">Delete</a>
-				<a asp-area="Notebooks" asp-page="/Form" asp-page-handler="Update" asp-route-id="@item.Id">Edit</a>
-			</div>
-		</li>
+		}
+	</ol>
+</div>
 
-
-	}
-</ol>
+@section Scripts {
+	<script src="/components/notebook-item.js"></script>
+}

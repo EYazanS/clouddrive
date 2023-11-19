@@ -4,6 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>57be4c22-2062-4229-bc3d-a169dd1370c6</UserSecretsId>
+	  <RootNamespace>CloudDrive</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,10 +23,19 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-rc.1.23419.4" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="7.0.11" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.10" />
     <PackageReference Include="Quartz" Version="3.7.0" />
 	<PackageReference Include="OpenIddict.AspNetCore" Version="4.8.0" />
     <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="4.8.0" />
     <PackageReference Include="OpenIddict.Quartz" Version="4.8.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\SharedResource.ar.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

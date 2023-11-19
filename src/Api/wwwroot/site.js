@@ -38,7 +38,61 @@ function handleUpload(event) {
   });
 }
 
-document.getElementById("toggle-darkmode").onclick = toggleDarkMode;
-document.getElementById("toggle-menu").onclick = toggleMenu;
+function ToggleLanguage(expDays) {
+  // Default at 365 days.
+  days = expDays || 365;
 
-document.getElementById("upload-form").onsubmit = handleUpload;
+  // Get unix milliseconds at current time plus number of days
+  let date = new Date();
+  date.setTime(+date + days * 86400000); //24 * 60 * 60 * 1000
+  const expires = "expires=" + date;
+
+  // READ COOKIE
+  let cookie = document.cookie;
+
+  // PARSE COOKIE
+  let cookeiValue = "";
+
+  let index = 0;
+
+  while (index < cookie.length - 3) {
+    if (
+      cookie[index] == "u" &&
+      cookie[index + 1] == "i" &&
+      cookie[index + 2] == "c"
+    ) {
+      let newIndex = index + 4;
+
+      while (newIndex < cookie.length && cookie[newIndex] !== ";") {
+        cookeiValue += cookie[newIndex++];
+      }
+
+      break;
+    }
+
+    index++;
+  }
+
+  // UPDATE COOKE
+  if (cookeiValue === "en") {
+    let newValue = `.AspNetCore.Culture=c=en|uic=ar;${expires}; path=/; `;
+    document.cookie = newValue;
+  } else if (cookeiValue == "ar") {
+    let newValue = `.AspNetCore.Culture=c=en|uic=en;${expires}; path=/; `;
+    document.cookie = newValue;
+  } else {
+    let newValue = `.AspNetCore.Culture=c=en|uic=ar;${expires}; path=/; `;
+    document.cookie = newValue;
+  }
+
+  // Refresh page
+  location.reload(true);
+}
+
+document.getElementById("toggle-darkmode").onclick = toggleDarkMode;
+document.getElementById("toggle-language").onclick = ToggleLanguage;
+document.getElementById("toggle-menu").onclick = toggleMenu;
+let form = document.getElementById("upload-form");
+if (form) {
+  form.onsubmit = handleUpload;
+}

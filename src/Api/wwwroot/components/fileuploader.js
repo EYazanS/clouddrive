@@ -1,5 +1,3 @@
-console.log("file uploader");
-
 let imageFormats = [".jpg", ".jpeg", ".gif", ".png", ".svg", ".bmp"];
 
 class FileUploader extends HTMLElement {
