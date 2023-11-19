@@ -1,0 +1,124 @@
+﻿@page
+@model RegisterModel
+
+@using CloudDrive
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+@{
+	ViewData["Title"] = "Register";
+}
+
+<div class="grid grid-cols-1 md:grid-cols-2">
+	<div class="aspect-w-4 aspect-h-3">
+		<img src="~/img/char-register.jpeg" class="" alt="Register" />
+	</div>
+
+	<div class="p-4">
+		<img src="/img/logo2.svg" class="mx-auto h-48 w-auto max-h-screen" alt="Foras logo" />
+
+		<h2 class="font-bold text-2xl my-4 text-center">
+			@Localizer["SignUpForas"]
+		</h2>
+
+		<div class="w-2/3 mx-auto">
+			<div class="flex justify-around space-x-4 rtl:space-x-reverse">
+				<a id="companypage" asp-area="Companies" asp-page="/Register">
+					<input id="org" type="radio" name="type" value="false" placeholder="Tesdt" />
+					<label for="org" onclick="document.getElementById('companypage').click()">
+						@Localizer["Company"]
+					</label>
+				</a>
+
+				<a id="userpage" asp-area="Identity" asp-page="/Account/Register">
+					<input id="user" type="radio" name="type" value="true" checked="checked" placeholder="Tesdt" />
+					<label for="user" onclick="document.getElementById('userpage').click()">
+						@Localizer["User"]
+					</label>
+				</a>
+			</div>
+
+			<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+				<div asp-validation-summary="ModelOnly" class="text-danger mb-6"></div>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2 ">
+					<div class="form-group">
+						<label asp-for="Input.FirstName"></label>
+						<input asp-for="Input.FirstName" class=" form-control bg-primary-200" />
+						<span asp-validation-for="Input.FirstName" class="text-danger"></span>
+					</div>
+
+					<div class="form-group">
+						<label asp-for="Input.LastName"></label>
+						<input asp-for="Input.LastName" class=" form-control bg-primary-200" />
+						<span asp-validation-for="Input.LastName" class="text-danger"></span>
+					</div>
+
+					<div class="form-group">
+						<label asp-for="Input.JobTitle"></label>
+						<input asp-for="Input.JobTitle" class=" form-control bg-primary-200" />
+						<span asp-validation-for="Input.JobTitle" class="text-danger"></span>
+					</div>
+
+					<div class="form-group">
+						<label asp-for="Input.PhoneNumber"></label>
+						<input asp-for="Input.PhoneNumber" class=" form-control bg-primary-200" />
+						<span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+					</div>
+
+					<div class="form-group">
+						<label asp-for="Input.Email"></label>
+						<input asp-for="Input.Email" class=" form-control bg-primary-200" />
+						<span asp-validation-for="Input.Email" class="text-danger"></span>
+					</div>
+
+					<div class="form-group">
+						<label asp-for="Input.Password"></label>
+						<input asp-for="Input.Password" class=" form-control bg-primary-200" />
+						<span asp-validation-for="Input.Password" class="text-danger"></span>
+					</div>
+				</div>
+
+				<button type="submit" class="btn btn-primary bg-primary-blue w-full mt-2">
+					@Localizer["SignUp"]
+				</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+@* <section>
+<h4>Use another service to register.</h4>
+<hr />
+@{
+if ((Model.ExternalLogins?.Count ?? 0) == 0)
+{
+<div>
+<p>
+There are no external authentication services configured. See <a
+href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+for details on setting up this ASP.NET application to support logging in via external services.
+</p>
+</div>
+}
+else
+{
+<form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post"
+class="form-horizontal">
+<div>
+<p>
+@foreach (var provider in Model.ExternalLogins)
+{
+<button type="submit" class="btn btn-primary bg-primary-blue" name="provider" value="@provider.Name"
+title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+}
+</p>
+</div>
+</form>
+}
+}
+</section> *@
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

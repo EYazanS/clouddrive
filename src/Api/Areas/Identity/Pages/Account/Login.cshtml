@@ -1,0 +1,105 @@
+﻿@page
+@model LoginModel
+
+@using CloudDrive
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+@{
+	ViewData["Title"] = "Log in";
+}
+
+<div class="grid grid-cols-1 md:grid-cols-2">
+	<div class="p-4">
+		<img src="/img/logo2.svg" class="mx-auto h-48 w-auto max-h-screen" alt="Foras logo" />
+
+		<h2 class="font-bold text-2xl my-4 text-center">
+			@Localizer["WelcomeToForas"]
+		</h2>
+
+		<p class="text-center my-4">
+			@Localizer["EnterUserAndPass"]
+		</p>
+
+		<div asp-validation-summary="ModelOnly" class="text-danger mb-6 text-center"></div>
+
+		@if (Model.NeedConfirmation)
+		{
+			<p class="text-center text-danger mb-6">
+				@Localizer["Please confirm email, or Resend"]
+			</p>
+		}
+
+		<form id="account" method="post">
+			<div class="flex flex-col w-72 mx-auto space-y-4">
+				<div class="form-group">
+					<input asp-for="Input.Username" class="form-control bg-primary-200 rounded-lg"
+						placeholder='@Localizer["Email"]' />
+					<span asp-validation-for="Input.Username" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<input asp-for="Input.Password" class="form-control bg-primary-200 rounded-lg" dir="ltr"
+						placeholder='@Localizer["Password"]' />
+					<span asp-validation-for="Input.Password" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<button type="submit" class="bg-primary-blue py-2 text-center rounded-lg w-full text-white">
+						@Localizer["SignIn"]
+					</button>
+				</div>
+
+				<div class="flex justify-between">
+					<label class="text-xs" asp-for="Input.RememberMe">
+						<input asp-for="Input.RememberMe" checked="checked" />
+						@Localizer["RememberMe"]
+					</label>
+
+					<a class="text-xs" id="forgot-password" asp-page="./ForgotPassword">
+						@Localizer["ForgotPassword"]
+					</a>
+				</div>
+			</div>
+		</form>
+
+		<div class="flex flex-col w-72 mx-auto space-y-4">
+			<div class="text-center text-gray-500">
+				@Localizer["Or"]
+			</div>
+
+			<form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post"
+				class="form-horizontal">
+
+				@{
+					if ((Model.ExternalLogins?.Count ?? 0) > 0)
+					{
+						foreach (var provider in Model.ExternalLogins)
+						{
+							<button type="submit"
+								class="font-light border-2 text-sm bg-transparent p2-4 text-center text-black py-2 w-full"
+								name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+								@Localizer["Log in using"] @provider.DisplayName
+							</button>
+						}
+					}
+				}
+			</form>
+		</div>
+
+		<p class="text-xs text-center mt-2">
+			@Localizer["NoAccount?"]
+			<a class="" asp-area="Identity" asp-page="/Account/Register">
+				@Localizer["RegisterNow"]
+			</a>
+		</p>
+	</div>
+
+	<div class="aspect-w-4 aspect-h-3">
+		<img src="~/img/char-register.jpeg" class="h-full w-full" alt="Login" />
+	</div>
+</div>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

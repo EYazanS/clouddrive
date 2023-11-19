@@ -1,0 +1,17 @@
+﻿@page
+@model RegisterConfirmationModel
+@using CloudDrive
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+@{
+	ViewData["Title"] = "Register confirmation";
+}
+
+<div class="container my-10">
+    <div class="border-2 bg-primary-green text-white p-4 rounded-md">
+        <p>
+            @Localizer["Please check your email to confirm your account."]
+        </p>
+    </div>
+</div>

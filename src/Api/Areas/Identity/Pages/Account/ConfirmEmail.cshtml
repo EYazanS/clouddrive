@@ -1,0 +1,16 @@
+﻿@page
+@model ConfirmEmailModel
+
+@using CloudDrive
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+@{
+	ViewData["Title"] = "Confirm email";
+}
+
+<div class="container my-10">
+	<div class="border-2 bg-primary-green text-white p-4 rounded-md">
+		@Localizer["Email confirmed successfully"]
+	</div>
+</div>
