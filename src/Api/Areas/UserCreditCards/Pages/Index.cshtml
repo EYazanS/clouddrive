@@ -6,7 +6,7 @@
 }
 
 <h2>List all Credit Cards for user</h2>
-<table>
+<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
   <thead>
     <tr>
       <th>ID</th>
@@ -20,7 +20,8 @@
         @if(Model.Cards.IsSuccssfull){
             @foreach(var card in Model.Cards.Data)
             {
-                <tr>
+                <user-credit itemid="@card.Id" card="@Json.Serialize(card)"></user-credit>
+                @*<tr>
                     <td>@card.Id</td>
                     <td>@card.HolderName</td>
                     <td>@card.CreditCardNumber</td>
@@ -29,10 +30,10 @@
                         <a asp-area="UserCreditCards" asp-page="Edit" asp-page-handler="Update" asp-route-id="@card.Id">Edit</a> | 
                         <a asp-area="UserCreditCards" asp-page="Delete" asp-route-id="@card.Id">Delete</a>
                     </td>
-                </tr>
+                </tr>*@
             }
         }
-        else
+       @* else
         {
             <tr>
                 <td colspan="5">@Model.Cards.Message</td>
@@ -44,7 +45,11 @@
   <tr>
       <td>                <a asp-area="UserCreditCards" asp-page="Edit" asp-page-handler="Update" >Add new </a>
 </td>
-  </tr>
+  </tr>*@
   </tbody>
 </table>
 
+@section Scripts{
+    <script src="/components/UserCreditCards.js"></script>
+
+}
