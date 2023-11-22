@@ -93,10 +93,12 @@ builder.Services
 		googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
 	});
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(o =>
+{
+	o.AddPolicy("Admin", y => y.RequireRole("Admin"));
+});
 
 // Add Localization
-
 builder
 	.Services
 	.AddLocalization(options =>
