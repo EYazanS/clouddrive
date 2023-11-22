@@ -8,12 +8,14 @@ using CloudDrive.Domain.Entities;
 using CloudDrive.Persistence;
 using CloudDrive.Services;
 using CloudDrive.Services.CreditCards;
+using CloudDrive.Services.Emails;
 using CloudDrive.Services.Files;
 using CloudDrive.Services.Note;
 using CloudDrive.Services.Notebooks;
 using CloudDrive.Services.UserPasswords;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +34,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder
 	.Services
+	.AddScoped<IEmailSender, EmailSender>()
 	.AddScoped<IFilesService, FilesService>()
 	.AddScoped<INotesService, NotesService>()
 	.AddScoped<ICreditCardsServices, UserCreditCards>()
@@ -48,6 +51,18 @@ builder.Services.AddSingleton(new FileConfigurations()
 });
 
 builder.Services.AddSingleton<BackgroundWorkService>();
+
+EmailConfig emailConfig = new()
+{
+	Username = builder.Configuration.GetValue<string>("EmailConfig:Username"),
+	Name = builder.Configuration.GetValue<string>("EmailConfig:Name"),
+	Email = builder.Configuration.GetValue<string>("EmailConfig:Email"),
+	Password = builder.Configuration.GetValue<string>("EmailConfig:Password"),
+	Host = builder.Configuration.GetValue<string>("EmailConfig:Host"),
+	Port = builder.Configuration.GetValue<int>("EmailConfig:Port"),
+};
+
+builder.Services.AddSingleton(emailConfig);
 
 // Add Authentication
 builder
