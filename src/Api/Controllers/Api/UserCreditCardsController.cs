@@ -34,7 +34,7 @@ namespace clouddrive.Controllers.Api
 
 		}
 		[HttpGet("user/{userId}")]
-		public async Task<IActionResult> GetUserCreditCards(int userId)
+		public async Task<IActionResult> GetUserCreditCards(string userId)
 		{
 			var userCreditCards = await _creditCardsService.GetAllAsync(userId);
 

@@ -7,31 +7,30 @@ using System.Threading.Tasks;
 
 namespace Services.CreditCards
 {
-    public class CreditCardsDto
-    {
-        public int Id {  get; set; }
-        public int userId { get; set; }
-        public string HolderName { get; set; }
-        public string CreditCardNumber { get; set; }
-        public string CardSecretCode { get; set; }
-        public int ExpireMonth { get; set; }
-        public int ExpireYear { get; set; }
+	public class CreditCardsDto
+	{
+		public int Id { get; set; }
+		public string UserId { get; set; }
+		public string HolderName { get; set; }
+		public string CreditCardNumber { get; set; }
+		public string CardSecretCode { get; set; }
+		public int ExpireMonth { get; set; }
+		public int ExpireYear { get; set; }
 
 
-        public CreditCardsDto (UserCreditCard userCreditCard)
-        {
-            this.Id = userCreditCard.Id;
-            this.HolderName = userCreditCard.HolderName;
-            this.ExpireMonth = userCreditCard.ExpireMonth;
-            this.ExpireYear = userCreditCard.ExpireYear;
-            this.CreditCardNumber = userCreditCard.CreditCardNumber;
-            this.CardSecretCode = userCreditCard.CreditCardSecretCode;
-            this.userId = userCreditCard.UserId;
-            
-        }
+		public CreditCardsDto(UserCreditCard userCreditCard)
+		{
+			this.Id = userCreditCard.Id;
+			this.HolderName = userCreditCard.HolderName;
+			this.ExpireMonth = userCreditCard.ExpireMonth;
+			this.ExpireYear = userCreditCard.ExpireYear;
+			this.CreditCardNumber = userCreditCard.CreditCardNumber;
+			this.CardSecretCode = userCreditCard.CreditCardSecretCode;
+			this.UserId = userCreditCard.UserId;
+		}
 
-        public CreditCardsDto()
-        {
-        }
-    }
+		public CreditCardsDto()
+		{
+		}
+	}
 }

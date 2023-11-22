@@ -7,5 +7,7 @@ namespace CloudDrive.Domain.Entities
 		public string NewFileName { get; set; }
 		public string ContentType { get; set; }
 		public string Path { get; set; }
+		public string UserId { get; set; }
+		public AppUser User { get; set; }
 	}
 }
