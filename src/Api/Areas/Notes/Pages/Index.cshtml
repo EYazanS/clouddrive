@@ -13,11 +13,22 @@
 <ol>
 	@foreach (var item in Model.Notes)
 	{
-		<li>
-			@item.Title
+		<li class="flex space-x-2">
+			<span>
+				@item.Title
+			</span>
+
+			@if (!string.IsNullOrEmpty(item.Notebook.Name))
+			{
+				<span>
+					Inside the nootbook "@item.Notebook.Name"
+				</span>
+			}
+
 			<a asp-area="Notes" asp-page="/Form" asp-route-handler="update" asp-route-id="@item.Id">
 				Update
 			</a>
+
 			<a asp-area="Notes" asp-page="/Form" asp-route-handler="create" asp-route-id="@item.Id">
 				Delete
 			</a>
