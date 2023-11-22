@@ -39,7 +39,8 @@ builder
 	.AddScoped<INotesService, NotesService>()
 	.AddScoped<ICreditCardsServices, UserCreditCards>()
 	.AddScoped<IUserPasswordsService, UserPasswordsService>()
-	.AddScoped<INotesService, NotesService>();
+	.AddScoped<INotesService, NotesService>()
+	.AddScoped<UserService>();
 
 builder
 	.Services
@@ -84,12 +85,20 @@ builder
 	.AddDefaultTokenProviders()
 	.AddEntityFrameworkStores<AppDbContext>();
 
-builder.Services.AddAuthentication();
+builder.Services
+	.AddAuthentication()
+	.AddGoogle(googleOptions =>
+	{
+		googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+		googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+	});
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(o =>
+{
+	o.AddPolicy("Admin", y => y.RequireRole("Admin"));
+});
 
 // Add Localization
-
 builder
 	.Services
 	.AddLocalization(options =>
@@ -174,6 +183,8 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseUserService();
 
 app.MapRazorPages();
 

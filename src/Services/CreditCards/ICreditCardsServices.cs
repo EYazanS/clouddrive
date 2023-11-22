@@ -16,7 +16,7 @@ namespace CloudDrive.Services.CreditCards
 	{
 		Task<Result<List<CreditCardsDto>>> ListAllUsersAsync();
 		Task<Result<CreditCardsDto>> GetAsync(int id);
-		Task<Result<List<CreditCardsDto>>> GetAllAsync(int id);
+		Task<Result<List<CreditCardsDto>>> GetAllAsync(string id);
 		Task<Result<CreditCardsDto>> InsertAsync(UserCreditCard userCreditCard);
 		Task<Result> DeleteAsync(int id);
 		Task<Result<CreditCardsDto>> UpdateAsync(int id, CreditCardsDto userCreditCard);
@@ -147,7 +147,7 @@ namespace CloudDrive.Services.CreditCards
 		/*
          Gets All the Credit Cards for one user
          */
-		public async Task<Result<List<CreditCardsDto>>> GetAllAsync(int id)
+		public async Task<Result<List<CreditCardsDto>>> GetAllAsync(string id)
 		{
 			List<UserCreditCard> cards = await _appDbContext.UserCreditCards.Where(x => x.UserId == id).ToListAsync();
 

@@ -20,19 +20,22 @@ namespace CloudDrive.Services.Note
 	{
 		private readonly AppDbContext _db;
 		private readonly ILogger<NotesService> _logger;
+		private readonly UserService _currentUser;
 
 		public NotesService(
 			AppDbContext db,
-			ILogger<NotesService> logger
+			ILogger<NotesService> logger,
+			UserService currentUser
 			)
 		{
 			_db = db;
 			_logger = logger;
+			_currentUser = currentUser;
 		}
 
 		public async Task<List<NoteDto>> Get()
 		{
-			var data = await _db.Notes.ToListAsync();
+			var data = await _db.Notes.Where(x => x.UserId == _currentUser.UserId).Include(x => x.Notebook).ToListAsync();
 
 			List<NoteDto> results = new List<NoteDto>();
 
@@ -45,6 +48,13 @@ namespace CloudDrive.Services.Note
 					Tags = item.Tags,
 					CreateDate = item.CreateDate,
 					UserId = item.UserId,
+					NotebookId = item.NotebookId,
+					Notebook = new()
+					{
+						Name = item.Notebook?.Name,
+						Color = item.Notebook?.Color,
+						Category = item.Notebook?.Category,
+					}
 				});
 			}
 
@@ -89,7 +99,8 @@ namespace CloudDrive.Services.Note
 					Title = note.Title,
 					Tags = note.Tags,
 					CreateDate = note.CreateDate,
-					UserId = note.UserId,
+					UserId = _currentUser.UserId,
+					NotebookId = note.NotebookId
 				};
 
 				_db.Notes.Add(data);

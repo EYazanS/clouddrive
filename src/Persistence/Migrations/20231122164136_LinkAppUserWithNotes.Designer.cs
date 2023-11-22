@@ -4,6 +4,7 @@ using CloudDrive.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231122164136_LinkAppUserWithNotes")]
+    partial class LinkAppUserWithNotes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,12 +135,7 @@ namespace Persistence.Migrations
                     b.Property<string>("Path")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Data");
                 });
@@ -162,12 +160,7 @@ namespace Persistence.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Notebooks");
                 });
@@ -183,9 +176,6 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("NotebookId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Tags")
                         .HasColumnType("nvarchar(max)");
 
@@ -196,8 +186,6 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("NotebookId");
 
                     b.HasIndex("UserId");
 
@@ -260,15 +248,13 @@ namespace Persistence.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UserPasswords");
                 });
@@ -406,35 +392,11 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CloudDrive.Domain.Entities.Data", b =>
-                {
-                    b.HasOne("CloudDrive.Domain.Entities.AppUser", "User")
-                        .WithMany("Data")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CloudDrive.Domain.Entities.Notebook", b =>
-                {
-                    b.HasOne("CloudDrive.Domain.Entities.AppUser", "User")
-                        .WithMany("Notebooks")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("CloudDrive.Domain.Entities.Notes", b =>
                 {
-                    b.HasOne("CloudDrive.Domain.Entities.Notebook", "Notebook")
-                        .WithMany("Notes")
-                        .HasForeignKey("NotebookId");
-
                     b.HasOne("CloudDrive.Domain.Entities.AppUser", "User")
                         .WithMany("Notes")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Notebook");
 
                     b.Navigation("User");
                 });
@@ -443,15 +405,6 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("CloudDrive.Domain.Entities.AppUser", "User")
                         .WithMany("CreditCards")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CloudDrive.Domain.Entities.UserPassword", b =>
-                {
-                    b.HasOne("CloudDrive.Domain.Entities.AppUser", "User")
-                        .WithMany("Passwords")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -512,17 +465,6 @@ namespace Persistence.Migrations
                 {
                     b.Navigation("CreditCards");
 
-                    b.Navigation("Data");
-
-                    b.Navigation("Notebooks");
-
-                    b.Navigation("Notes");
-
-                    b.Navigation("Passwords");
-                });
-
-            modelBuilder.Entity("CloudDrive.Domain.Entities.Notebook", b =>
-                {
                     b.Navigation("Notes");
                 });
 #pragma warning restore 612, 618

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using CloudDrive.Services.Notebooks;
 
 namespace CloudDrive.Services.Note
 {
@@ -12,7 +13,11 @@ namespace CloudDrive.Services.Note
 		[Required]
 		public string Tags { get; set; }
 
+		public int? NotebookId { get; set; }
+
 		public DateTime CreateDate { get; set; }
-		public int? UserId { get; set; }
+		public string UserId { get; set; }
+
+		public NotebookDto Notebook { get; set; }
 	}
 }

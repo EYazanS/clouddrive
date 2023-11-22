@@ -10,10 +10,6 @@
 
 @inject IHtmlLocalizer<SharedResource> Localizer
 
-<span>
-	@Thread.CurrentThread.CurrentUICulture.Name
-</span>
-
 <form asp-area="Notes" asp-page="/Form" asp-route-id="Id" method="post">
 	<div>
 		<label asp-for="Note.Title"></label>
@@ -27,11 +23,25 @@
 		<span asp-validation-for="Note.Tags" class="text-danger"></span>
 	</div>
 
+	<div>
+		<label asp-for="Note.NotebookId"></label>
+
+		<select asp-for="Note.NotebookId">
+			@foreach (var item in Model.Notebooks)
+			{
+				<option value="@item.Id">
+					@item.Name
+				</option>
+			}
+		</select>
+		<span asp-validation-for="Note.NotebookId" class="text-danger"></span>
+	</div>
+
 	<button type="submit">
 		Save
 	</button>
 
 	<a asp-area="Notes" asp-page="/Index">
-		@Localizer["Test"]
+		@Localizer["Cancel"]
 	</a>
 </form>

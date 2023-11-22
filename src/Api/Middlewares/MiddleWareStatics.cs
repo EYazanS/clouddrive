@@ -11,5 +11,10 @@ namespace CloudDrive.Api.Middleware
 		{
 			return builder.UseMiddleware<ErrorHandlerMiddleware>();
 		}
+
+		public static IApplicationBuilder UseUserService(this IApplicationBuilder builder)
+		{
+			return builder.UseMiddleware<UserServiceMiddleware>();
+		}
 	}
 }
