@@ -39,7 +39,8 @@ builder
 	.AddScoped<INotesService, NotesService>()
 	.AddScoped<ICreditCardsServices, UserCreditCards>()
 	.AddScoped<IUserPasswordsService, UserPasswordsService>()
-	.AddScoped<INotesService, NotesService>();
+	.AddScoped<INotesService, NotesService>()
+	.AddScoped<UserService>();
 
 builder
 	.Services
@@ -180,6 +181,8 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseUserService();
 
 app.MapRazorPages();
 
